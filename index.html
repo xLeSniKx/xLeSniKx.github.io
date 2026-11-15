@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Бесплатные программы: Snowfall, падающий снег для рабочего стола на Windows, macOS и Linux. Открытый код, без рекламы и регистрации.">
+<title>Мои программы</title>
+
+<script>
+  // Тема и акцент применяются до загрузки страницы, чтобы не было мигания
+  (function () {
+    var prefs = JSON.parse(localStorage.getItem('prefs') || '{}');
+    var theme = prefs.theme || 'auto';
+    var accent = prefs.accent || 'green-1';
+    var dark = theme === 'dark' || (theme === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+    document.documentElement.dataset.accent = accent;
+  })();
+</script>
+
+<style>
+  /* Акценты: светлая и тёмная версии */
+  :root { --a-light: #1f9d63; --a-dark: #4fd08f; }
+  :root[data-accent="green-2"] { --a-light: #0f8a5f; --a-dark: #34c28a; }
+  :root[data-accent="green-3"] { --a-light: #2f7d32; --a-dark: #6cc070; }
+  :root[data-accent="green-4"] { --a-light: #5a8f1e; --a-dark: #9ccc5a; }
+  :root[data-accent="gray"]    { --a-light: #5c5c6b; --a-dark: #d0d0da; }
+  :root[data-accent="blue"]    { --a-light: #3b6fd8; --a-dark: #7aa2f7; }
+  :root[data-accent="amber"]   { --a-light: #a8650f; --a-dark: #f2b458; }
+  :root[data-accent="violet"]  { --a-light: #7a4fd1; --a-dark: #b49af5; }
+
+  /* Светлая тема */
+  :root { --bg: #f6f6f8; --surface: #ffffff; --surface-2: #eeeef3; --text: #15151c; --text-muted: #5c5c6b; --border: #dcdce4; --on-accent: #ffffff; --accent: var(--a-light); --pattern-opacity: 0.06; }
+
+  /* Тёмная тема: графитовая */
+  :root[data-theme="dark"] { --bg: #0e0f11; --surface: #16181b; --surface-2: #1e2125; --text: #e8e9ec; --text-muted: #9196a0; --border: #2a2e33; --on-accent: #0b0c0e; --accent: var(--a-dark); --pattern-opacity: 0.09; }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  a { color: inherit; }
+  .wrap { position: relative; z-index: 1; max-width: none; margin: 0 auto; padding: 0 clamp(12px, 1.5vw, 24px); }
+
+  /* Снежинки на фоне */
+  .flakes { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .flake {
+    position: absolute;
+    background: var(--accent);
+    opacity: var(--pattern-opacity);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg stroke='black' stroke-width='2' stroke-linecap='round' fill='none'%3E%3Cpath d='M20 4v32M4 20h32M9 9l22 22M31 9L9 31'/%3E%3Cpath d='M20 9l-4-4M20 9l4-4M20 31l-4 4M20 31l4 4M9 20l-4-4M9 20l-4 4M31 20l4-4M31 20l4 4'/%3E%3C/g%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg stroke='black' stroke-width='2' stroke-linecap='round' fill='none'%3E%3Cpath d='M20 4v32M4 20h32M9 9l22 22M31 9L9 31'/%3E%3Cpath d='M20 9l-4-4M20 9l4-4M20 31l-4 4M20 31l4 4M9 20l-4-4M9 20l-4 4M31 20l4-4M31 20l4 4'/%3E%3C/g%3E%3C/svg%3E");
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+  }
+
+  /* Верхняя панель */
+  header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; position: relative; }
+  .logo { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+  .logo span { color: var(--accent); }
+  nav a { margin-left: 20px; text-decoration: none; color: var(--text-muted); font-size: 15px; }
+  nav a:hover { color: var(--text); }
+  .gear { width: 40px; height: 40px; margin-left: 20px; border-radius: 10px; border: 0.5px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; font-size: 18px; }
+  .gear:hover { border-color: var(--accent); }
+
+  /* Бегущая строка */
+  .marquee { overflow: hidden; border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border); background: var(--surface); }
+  .marquee-track { display: flex; gap: 48px; white-space: nowrap; padding: 10px 0; width: max-content; animation: scroll 28s linear infinite; font-size: 14px; color: var(--text-muted); }
+  .marquee-track span::before { content: "• "; color: var(--accent); }
+  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* Герой-карусель */
+  .hero { margin: 32px 0 8px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 20px; padding: 48px 40px; min-height: 340px; position: relative; overflow: hidden; }
+  .slide { display: none; animation: fade 0.6s ease; }
+  .slide.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  .eyebrow { font-size: 13px; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 12px; }
+  .hero h1 { font-size: clamp(36px, 6vw, 60px); line-height: 1.05; margin: 0 0 16px; font-weight: 600; letter-spacing: -0.02em; }
+  .hero p { font-size: 18px; color: var(--text-muted); max-width: 520px; margin: 0 0 24px; }
+  .dots { position: absolute; left: 40px; bottom: 20px; display: flex; gap: 8px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; border: none; background: var(--border); cursor: pointer; padding: 0; }
+  .dot.active { background: var(--accent); }
+
+  /* Кнопки */
+  .btns { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 12px 20px; border-radius: 10px; border: 0.5px solid var(--border); background: transparent; color: var(--text); font-size: 15px; cursor: pointer; text-decoration: none; font-family: inherit; }
+  .btn:hover { border-color: var(--accent); }
+  .btn-primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn:disabled { opacity: 0.5; cursor: default; }
+  .btn:disabled:hover { border-color: var(--border); }
+
+  /* Каталог */
+  section.os { margin-top: 56px; }
+  section.os h2 { font-size: 24px; font-weight: 600; margin: 0 0 16px; letter-spacing: -0.01em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 22px; transition: transform 0.2s ease, border-color 0.2s ease; }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .card h3 { margin: 0 0 6px; font-size: 18px; font-weight: 600; }
+  .card p { margin: 0 0 8px; color: var(--text-muted); font-size: 14px; }
+  .card .meta { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+  .card .btns { margin-top: 4px; }
+  .empty { border: 0.5px dashed var(--border); background: transparent; display: flex; align-items: center; justify-content: center; min-height: 140px; color: var(--text-muted); font-size: 14px; }
+
+  /* Появление при прокрутке */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  footer { margin: 64px 0 32px; font-size: 14px; color: var(--text-muted); text-align: center; }
+
+  /* Панель настроек */
+  .panel { display: none; position: absolute; right: 20px; top: 70px; width: 260px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 14px; padding: 16px; z-index: 10; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+  .panel.open { display: block; }
+  .panel h3 { margin: 0 0 8px; font-size: 13px; font-weight: 500; color: var(--text-muted); }
+  .row { display: flex; gap: 6px; margin-bottom: 16px; }
+  .row button { flex: 1; padding: 7px; font-size: 13px; border: 0.5px solid var(--border); border-radius: 8px; background: transparent; color: var(--text); cursor: pointer; font-family: inherit; }
+  .row button.active { border-color: var(--accent); color: var(--accent); }
+  .swatches { display: flex; flex-wrap: wrap; gap: 10px; }
+  .swatch { width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; padding: 0; }
+  .swatch.active { border-color: var(--text); }
+  .swatch[data-c="green-1"] { background: #1f9d63; }
+  .swatch[data-c="green-2"] { background: #0f8a5f; }
+  .swatch[data-c="green-3"] { background: #2f7d32; }
+  .swatch[data-c="green-4"] { background: #5a8f1e; }
+  .swatch[data-c="gray"]    { background: #5c5c6b; }
+  .swatch[data-c="blue"]    { background: #3b6fd8; }
+  .swatch[data-c="amber"]   { background: #a8650f; }
+  .swatch[data-c="violet"]  { background: #7a4fd1; }
+
+  /* Окно подтверждения */
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); align-items: center; justify-content: center; padding: 16px; z-index: 20; }
+  .overlay.open { display: flex; }
+  .dialog { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 26px; max-width: 420px; }
+  .dialog p { margin: 0 0 10px; font-size: 15px; color: var(--text-muted); }
+  .dialog b { color: var(--text); }
+  .dialog .btns { justify-content: flex-end; margin-top: 18px; }
+
+  /* Без анимаций, если они отключены в системе */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+
+  @media (max-width: 640px) {
+    nav { display: none; }
+    .hero { padding: 32px 22px 56px; }
+    .dots { left: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="flakes" id="flakes"></div>
+
+<!-- Данные Snowfall. Когда появится релиз, вставь ссылку в release и свой логин в source -->
+<script>
+  var SNOWFALL = {
+    name: 'Snowfall-Setup.exe',
+    version: '1.0.0',
+    size: '12 МБ',
+    source: 'https://github.com/xLeSniKx/snowfall',
+    release: ''
+  };
+</script>
+
+<div class="wrap">
+
+  <header>
+    <div class="logo">Мои <span>программы</span></div>
+    <nav>
+      <a href="#windows">Windows</a>
+      <a href="#macos">macOS</a>
+      <a href="#linux">Linux</a>
+      <a href="#android">Android</a>
+    </nav>
+    <button class="gear" id="gear" aria-label="Настройки">⚙</button>
+
+    <div class="panel" id="panel">
+      <h3>Тема</h3>
+      <div class="row" id="themeRow">
+        <button data-theme="auto">Авто</button>
+        <button data-theme="light">Светлая</button>
+        <button data-theme="dark">Тёмная</button>
+      </div>
+      <h3>Цвет акцента</h3>
+      <div class="swatches" id="swatches">
+        <button class="swatch" data-c="green-1" aria-label="Мятный зелёный"></button>
+        <button class="swatch" data-c="green-2" aria-label="Изумрудный"></button>
+        <button class="swatch" data-c="green-3" aria-label="Хвойный"></button>
+        <button class="swatch" data-c="green-4" aria-label="Лаймовый"></button>
+        <button class="swatch" data-c="gray" aria-label="Серый"></button>
+        <button class="swatch" data-c="blue" aria-label="Синий"></button>
+        <button class="swatch" data-c="amber" aria-label="Янтарный"></button>
+        <button class="swatch" data-c="violet" aria-label="Фиолетовый"></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Windows 10 и 11</span><span>macOS</span><span>Linux</span><span>Android</span><span>Открытый исходный код</span><span>Без рекламы</span><span>Без регистрации</span>
+      <span>Windows 10 и 11</span><span>macOS</span><span>Linux</span><span>Android</span><span>Открытый исходный код</span><span>Без рекламы</span><span>Без регистрации</span>
+    </div>
+  </div>
+
+  <!-- Герой с каруселью проектов -->
+  <section class="hero" id="hero">
+
+    <div class="slide active">
+      <p class="eyebrow">Новое · Windows, macOS, Linux</p>
+      <h1>Snowfall</h1>
+      <p>Падающий снег поверх рабочего стола. Настраивается, смахивается мышью и не мешает работе.</p>
+      <div class="btns">
+        <button class="btn btn-primary dl">Скачать</button>
+        <a class="btn" href="https://github.com/xLeSniKx/snowfall" target="_blank" rel="noopener">Исходный код</a>
+      </div>
+    </div>
+
+    <div class="slide">
+      <p class="eyebrow">Скоро</p>
+      <h1>Следующий проект</h1>
+      <p>Готовим новую программу. Загляните позже или следите за обновлениями на GitHub.</p>
+      <div class="btns">
+        <button class="btn" disabled>Скоро</button>
+      </div>
+    </div>
+
+    <div class="dots" id="dots">
+      <button class="dot active" aria-label="Слайд 1"></button>
+      <button class="dot" aria-label="Слайд 2"></button>
+    </div>
+  </section>
+
+  <!-- Каталог по ОС -->
+  <section class="os reveal" id="windows">
+    <h2>Windows</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Snowfall</h3>
+        <p>Падающий снег поверх рабочего стола.</p>
+        <div class="meta">Версия 1.0.0 · 12 МБ</div>
+        <div class="btns">
+          <button class="btn btn-primary dl">Скачать</button>
+          <a class="btn" href="https://github.com/xLeSniKx/snowfall" target="_blank" rel="noopener">Исходный код</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="os reveal" id="macos">
+    <h2>macOS</h2>
+    <div class="grid"><div class="card empty">Пока пусто</div></div>
+  </section>
+
+  <section class="os reveal" id="linux">
+    <h2>Linux</h2>
+    <div class="grid"><div class="card empty">Пока пусто</div></div>
+  </section>
+
+  <section class="os reveal" id="android">
+    <h2>Android</h2>
+    <div class="grid"><div class="card empty">Пока пусто</div></div>
+  </section>
+
+  <footer>
+    Все программы открыты: исходный код лежит на GitHub. Без рекламы и без регистрации.
+  </footer>
+</div>
+
+<!-- Окно подтверждения скачивания -->
+<div class="overlay" id="confirm">
+  <div class="dialog">
+    <p>Вы собираетесь скачать файл <b id="cf-name"></b> (версия <span id="cf-ver"></span>, <span id="cf-size"></span>).</p>
+    <p>Если не уверены, сначала проверьте открытый исходный код: ссылка «Исходный код» находится рядом с кнопкой «Скачать».</p>
+    <p>Windows может показать предупреждение SmartScreen, потому что программа не подписана.</p>
+    <div class="btns">
+      <button class="btn" id="cancelBtn">Отмена</button>
+      <a class="btn btn-primary" id="yesBtn" href="#">Да, скачать</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const root = document.documentElement;
+  const media = matchMedia('(prefers-color-scheme: dark)');
+  const gear = document.getElementById('gear');
+  const panel = document.getElementById('panel');
+  const confirmBox = document.getElementById('confirm');
+
+  let prefs = JSON.parse(localStorage.getItem('prefs') || '{}');
+  let theme = prefs.theme || 'auto';
+  let accent = prefs.accent || 'green-1';
+
+  function savePrefs() {
+    localStorage.setItem('prefs', JSON.stringify({ theme, accent }));
+  }
+
+  function applyTheme() {
+    const dark = theme === 'dark' || (theme === 'auto' && media.matches);
+    root.dataset.theme = dark ? 'dark' : 'light';
+    document.querySelectorAll('#themeRow button').forEach(b => {
+      b.classList.toggle('active', b.dataset.theme === theme);
+    });
+  }
+
+  function applyAccent() {
+    root.dataset.accent = accent;
+    document.querySelectorAll('.swatch').forEach(s => {
+      s.classList.toggle('active', s.dataset.c === accent);
+    });
+  }
+
+  document.querySelectorAll('#themeRow button').forEach(b => {
+    b.addEventListener('click', () => { theme = b.dataset.theme; applyTheme(); savePrefs(); });
+  });
+  document.querySelectorAll('.swatch').forEach(s => {
+    s.addEventListener('click', () => { accent = s.dataset.c; applyAccent(); savePrefs(); });
+  });
+  media.addEventListener('change', () => { if (theme === 'auto') applyTheme(); });
+
+  gear.addEventListener('click', () => panel.classList.toggle('open'));
+  document.addEventListener('click', e => {
+    if (!panel.contains(e.target) && e.target !== gear) panel.classList.remove('open');
+  });
+
+  // Карусель героя
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+  let current = 0;
+  let timer = null;
+
+  function showSlide(i) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = i;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+  function nextSlide() { showSlide((current + 1) % slides.length); }
+  function startCarousel() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    timer = setInterval(nextSlide, 6000);
+  }
+  function stopCarousel() { clearInterval(timer); }
+
+  dots.forEach((d, i) => d.addEventListener('click', () => { showSlide(i); }));
+  const hero = document.getElementById('hero');
+  hero.addEventListener('mouseenter', stopCarousel);
+  hero.addEventListener('mouseleave', startCarousel);
+  startCarousel();
+
+  // Кнопки «Скачать»: без ссылки показываем «Скоро», с ссылкой открываем окно подтверждения
+  const hasRelease = !!SNOWFALL.release;
+  document.querySelectorAll('.dl').forEach(btn => {
+    if (!hasRelease) {
+      btn.textContent = 'Скоро';
+      btn.disabled = true;
+    } else {
+      btn.addEventListener('click', () => {
+        document.getElementById('cf-name').textContent = SNOWFALL.name;
+        document.getElementById('cf-ver').textContent = SNOWFALL.version;
+        document.getElementById('cf-size').textContent = SNOWFALL.size;
+        document.getElementById('yesBtn').href = SNOWFALL.release;
+        confirmBox.classList.add('open');
+      });
+    }
+  });
+
+  document.getElementById('cancelBtn').addEventListener('click', () => confirmBox.classList.remove('open'));
+  document.getElementById('yesBtn').addEventListener('click', () => confirmBox.classList.remove('open'));
+  confirmBox.addEventListener('click', e => { if (e.target === confirmBox) confirmBox.classList.remove('open'); });
+
+  // Появление разделов при прокрутке
+  const reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.15 });
+    reveals.forEach(el => io.observe(el));
+  } else {
+    reveals.forEach(el => el.classList.add('in'));
+  }
+
+  // Снежинки: случайные размер, положение и поворот
+  (function () {
+    var box = document.getElementById('flakes');
+    for (var i = 0; i < 45; i++) {
+      var f = document.createElement('div');
+      f.className = 'flake';
+      var s = 14 + Math.random() * 22;
+      f.style.width = s + 'px';
+      f.style.height = s + 'px';
+      f.style.left = (Math.random() * 100) + '%';
+      f.style.top = (Math.random() * 100) + '%';
+      f.style.transform = 'rotate(' + Math.round(Math.random() * 60) + 'deg)';
+      box.appendChild(f);
+    }
+  })();
+
+  applyTheme();
+  applyAccent();
+</script>
+</body>
+</html>
