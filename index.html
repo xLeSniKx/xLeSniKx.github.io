@@ -2,9 +2,8 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="google-site-verification" content="qMtgf5JI5dro4wSNdiGmeIQcP0Plj0SZH401HJj5lU8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Бесплатные программы: Snowfall, падающий снег для рабочего стола на Windows, macOS и Linux. Открытый код, без рекламы и регистрации.">
+<meta name="description" content="LeSniK Labs: бесплатные программы Snowfall и Pathfinder для Windows, macOS, Linux и Android. Открытый код, без рекламы и регистрации.">
 <title>LeSniK Labs: программы</title>
 
 <script>
@@ -100,6 +99,7 @@
   .card p { margin: 0 0 8px; color: var(--text-muted); font-size: 14px; }
   .card .meta { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
   .card .btns { margin-top: 4px; }
+  .card img { border-radius: 12px; margin-bottom: 12px; display: block; }
   .empty { border: 0.5px dashed var(--border); background: transparent; display: flex; align-items: center; justify-content: center; min-height: 140px; color: var(--text-muted); font-size: 14px; }
 
   /* Появление при прокрутке */
@@ -152,14 +152,21 @@
 
 <div class="flakes" id="flakes"></div>
 
-<!-- Данные Snowfall. Когда появится релиз, вставь ссылку в release и свой логин в source -->
+<!-- Данные проектов. Когда появится файл Snowfall, вставь прямую ссылку в file -->
 <script>
-  var SNOWFALL = {
-    name: 'Snowfall-Setup.exe',
-    version: '1.0.0',
-    size: '12 МБ',
-    source: 'https://github.com/xLeSniKx/snowfall',
-    release: ''
+  var PROJECTS = {
+    snow: {
+      name: 'Snowfall-Setup.exe',
+      version: '1.0.0',
+      size: '12 МБ',
+      file: ''
+    },
+    path: {
+      name: 'PathFinder.apk',
+      version: '1.0.0',
+      size: '114 МБ',
+      file: 'https://github.com/xLeSniKx/Pathfinder/releases/download/v1.0.0/PathFinder.apk'
+    }
   };
 </script>
 
@@ -211,7 +218,7 @@
       <h1>Snowfall</h1>
       <p>Падающий снег поверх рабочего стола. Настраивается, смахивается мышью и не мешает работе.</p>
       <div class="btns">
-        <button class="btn btn-primary dl">Скачать</button>
+        <button class="btn btn-primary dl" data-p="snow">Скачать</button>
         <a class="btn" href="https://github.com/xLeSniKx/snowfall" target="_blank" rel="noopener">Исходный код</a>
       </div>
     </div>
@@ -240,7 +247,7 @@
         <p>Падающий снег поверх рабочего стола.</p>
         <div class="meta">Версия 1.0.0 · 12 МБ</div>
         <div class="btns">
-          <button class="btn btn-primary dl">Скачать</button>
+          <button class="btn btn-primary dl" data-p="snow">Скачать</button>
           <a class="btn" href="https://github.com/xLeSniKx/snowfall" target="_blank" rel="noopener">Исходный код</a>
         </div>
       </div>
@@ -258,23 +265,23 @@
   </section>
 
   <section class="os reveal" id="android">
-  <h2>Android</h2>
-  <div class="grid">
-    <div class="card">
-      <img src="pathfinder-icon.svg" width="48" height="48" alt="" style="border-radius: 12px; margin-bottom: 12px;">
-      <h3>Pathfinder</h3>
-      <p>GPS-трекер в стиле «тумана войны». Открывай карту, гуляя и катаясь по городу.</p>
-      <div class="meta">Версия 1.0.0 · Android</div>
-      <div class="btns">
-        <a class="btn btn-primary" href="https://github.com/xLeSniKx/Pathfinder/releases/tag/v1.0.0" target="_blank" rel="noopener">Скачать</a>
-        <a class="btn" href="https://github.com/xLeSniKx/Pathfinder" target="_blank" rel="noopener">Исходный код</a>
+    <h2>Android</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="pathfinder-icon.svg" width="48" height="48" alt="">
+        <h3>Pathfinder</h3>
+        <p>GPS-трекер в стиле «тумана войны». Открывай карту, гуляя и катаясь по городу.</p>
+        <div class="meta">Версия 1.0.0 · Android</div>
+        <div class="btns">
+          <button class="btn btn-primary dl" data-p="path">Скачать</button>
+          <a class="btn" href="https://github.com/xLeSniKx/Pathfinder" target="_blank" rel="noopener">Исходный код</a>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
   <footer>
-    LeSniK Labs. Все программы открыты: исходный код лежит на GitHub.
+    LeSniK Labs. Все программы открыты: исходный код лежит на GitHub. Без рекламы и без регистрации.
   </footer>
 </div>
 
@@ -360,25 +367,34 @@
   hero.addEventListener('mouseleave', startCarousel);
   startCarousel();
 
-  // Кнопки «Скачать»: без ссылки показываем «Скоро», с ссылкой открываем окно подтверждения
-  const hasRelease = !!SNOWFALL.release;
+  // Кнопки «Скачать»: если файла ещё нет, показываем «Скоро», иначе открываем окно подтверждения
+  const cfName = document.getElementById('cf-name');
+  const cfVer = document.getElementById('cf-ver');
+  const cfSize = document.getElementById('cf-size');
+  const yesBtn = document.getElementById('yesBtn');
+
   document.querySelectorAll('.dl').forEach(btn => {
-    if (!hasRelease) {
+    const p = PROJECTS[btn.dataset.p];
+    if (!p || !p.file) {
       btn.textContent = 'Скоро';
       btn.disabled = true;
-    } else {
-      btn.addEventListener('click', () => {
-        document.getElementById('cf-name').textContent = SNOWFALL.name;
-        document.getElementById('cf-ver').textContent = SNOWFALL.version;
-        document.getElementById('cf-size').textContent = SNOWFALL.size;
-        document.getElementById('yesBtn').href = SNOWFALL.release;
-        confirmBox.classList.add('open');
-      });
+      return;
     }
+    btn.addEventListener('click', () => {
+      cfName.textContent = p.name;
+      cfVer.textContent = p.version;
+      cfSize.textContent = p.size;
+      yesBtn.href = p.file;
+      yesBtn.setAttribute('download', p.name);
+      confirmBox.classList.add('open');
+    });
   });
 
+  // «Да» начинает загрузку файла и закрывает окно, страница остаётся открытой
+  yesBtn.addEventListener('click', () => {
+    setTimeout(() => confirmBox.classList.remove('open'), 100);
+  });
   document.getElementById('cancelBtn').addEventListener('click', () => confirmBox.classList.remove('open'));
-  document.getElementById('yesBtn').addEventListener('click', () => confirmBox.classList.remove('open'));
   confirmBox.addEventListener('click', e => { if (e.target === confirmBox) confirmBox.classList.remove('open'); });
 
   // Появление разделов при прокрутке
