@@ -19,7 +19,6 @@
 </script>
 
 <style>
-  /* Акценты: светлая и тёмная версии */
   :root { --a-light: #1f9d63; --a-dark: #4fd08f; }
   :root[data-accent="green-2"] { --a-light: #0f8a5f; --a-dark: #34c28a; }
   :root[data-accent="green-3"] { --a-light: #2f7d32; --a-dark: #6cc070; }
@@ -29,87 +28,42 @@
   :root[data-accent="amber"]   { --a-light: #a8650f; --a-dark: #f2b458; }
   :root[data-accent="violet"]  { --a-light: #7a4fd1; --a-dark: #b49af5; }
 
-  /* Светлая тема */
   :root { --bg: #f6f6f8; --surface: #ffffff; --surface-2: #eeeef3; --text: #15151c; --text-muted: #5c5c6b; --border: #dcdce4; --on-accent: #ffffff; --accent: var(--a-light); --pattern-opacity: 0.06; }
-
-  /* Тёмная тема: графитовая */
   :root[data-theme="dark"] { --bg: #0e0f11; --surface: #16181b; --surface-2: #1e2125; --text: #e8e9ec; --text-muted: #9196a0; --border: #2a2e33; --on-accent: #0b0c0e; --accent: var(--a-dark); --pattern-opacity: 0.09; }
 
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
   a { color: inherit; }
-  .wrap { position: relative; z-index: 1; max-width: none; margin: 0 auto; padding: 0 clamp(12px, 1.5vw, 24px); }
+  .wrap { position: relative; z-index: 1; padding: 0 clamp(12px, 1.5vw, 24px); }
 
   /* Снежинки на фоне */
   .flakes { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-  .flake {
-    position: absolute;
-    background: var(--accent);
-    opacity: var(--pattern-opacity);
-    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg stroke='black' stroke-width='2' stroke-linecap='round' fill='none'%3E%3Cpath d='M20 4v32M4 20h32M9 9l22 22M31 9L9 31'/%3E%3Cpath d='M20 9l-4-4M20 9l4-4M20 31l-4 4M20 31l4 4M9 20l-4-4M9 20l-4 4M31 20l4-4M31 20l4 4'/%3E%3C/g%3E%3C/svg%3E");
-    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg stroke='black' stroke-width='2' stroke-linecap='round' fill='none'%3E%3Cpath d='M20 4v32M4 20h32M9 9l22 22M31 9L9 31'/%3E%3Cpath d='M20 9l-4-4M20 9l4-4M20 31l-4 4M20 31l4 4M9 20l-4-4M9 20l-4 4M31 20l4-4M31 20l4 4'/%3E%3C/g%3E%3C/svg%3E");
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-  }
+  .flake { position: absolute; background: var(--accent); opacity: var(--pattern-opacity);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg stroke='black' stroke-width='2' stroke-linecap='round' fill='none'%3E%3Cpath d='M20 4v32M4 20h32M9 9l22 22M31 9L9 31'/%3E%3Cpath d='M20 9l-4-4M20 9l4-4M20 31l-4 4M20 31l4 4M9 20l-4-4M9 20l-4 4M31 20l-4-4M31 20l4 4'/%3E%3C/g%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg stroke='black' stroke-width='2' stroke-linecap='round' fill='none'%3E%3Cpath d='M20 4v32M4 20h32M9 9l22 22M31 9L9 31'/%3E%3Cpath d='M20 9l-4-4M20 9l4-4M20 31l-4 4M20 31l4 4M9 20l-4-4M9 20l-4 4M31 20l-4-4M31 20l4 4'/%3E%3C/g%3E%3C/svg%3E");
+    -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
 
   /* Верхняя панель */
-  header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; position: relative; }
-  .logo { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+  header { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; position: relative; z-index: 5; }
+  .logo { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; text-decoration: none; }
   .logo span { color: var(--accent); }
-  nav a { margin-left: 20px; text-decoration: none; color: var(--text-muted); font-size: 15px; }
-  nav a:hover { color: var(--text); }
-  .gear { width: 40px; height: 40px; margin-left: 20px; border-radius: 10px; border: 0.5px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; font-size: 18px; }
+  .right { display: flex; align-items: center; gap: 12px; }
+
+  .menu { position: relative; }
+  .menu-btn { padding: 10px 18px; border-radius: 10px; border: 0.5px solid var(--border); background: var(--surface); color: var(--text); font-size: 15px; cursor: pointer; font-family: inherit; }
+  .menu-btn:hover, .menu.open .menu-btn { border-color: var(--accent); }
+  .mega { position: absolute; right: 0; top: calc(100% + 10px); width: 460px; max-width: 92vw; background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 14px; box-shadow: 0 12px 32px rgba(0,0,0,0.14); opacity: 0; transform: translateY(-6px); pointer-events: none; transition: opacity 0.2s ease, transform 0.2s ease; }
+  .menu.open .mega { opacity: 1; transform: none; pointer-events: auto; }
+  .os-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .os-tile { display: block; padding: 16px; border-radius: 12px; border: 0.5px solid var(--border); background: var(--surface-2); text-decoration: none; }
+  .os-tile:hover { border-color: var(--accent); }
+  .os-tile strong { display: block; font-size: 16px; font-weight: 600; }
+  .os-tile span { font-size: 13px; color: var(--text-muted); }
+
+  .gear { width: 40px; height: 40px; border-radius: 10px; border: 0.5px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; font-size: 18px; }
   .gear:hover { border-color: var(--accent); }
-
-  /* Бегущая строка */
-  .marquee { overflow: hidden; border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border); background: var(--surface); }
-  .marquee-track { display: flex; gap: 48px; white-space: nowrap; padding: 10px 0; width: max-content; animation: scroll 28s linear infinite; font-size: 14px; color: var(--text-muted); }
-  .marquee-track span::before { content: "• "; color: var(--accent); }
-  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-  /* Герой-карусель */
-  .hero { margin: 32px 0 8px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 20px; padding: 48px 40px; min-height: 340px; position: relative; overflow: hidden; }
-  .slide { display: none; animation: fade 0.6s ease; }
-  .slide.active { display: block; }
-  @keyframes fade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
-  .eyebrow { font-size: 13px; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 12px; }
-  .hero h1 { font-size: clamp(36px, 6vw, 60px); line-height: 1.05; margin: 0 0 16px; font-weight: 600; letter-spacing: -0.02em; }
-  .hero p { font-size: 18px; color: var(--text-muted); max-width: 520px; margin: 0 0 24px; }
-  .dots { position: absolute; left: 40px; bottom: 20px; display: flex; gap: 8px; }
-  .dot { width: 10px; height: 10px; border-radius: 50%; border: none; background: var(--border); cursor: pointer; padding: 0; }
-  .dot.active { background: var(--accent); }
-
-  /* Кнопки */
-  .btns { display: flex; gap: 10px; flex-wrap: wrap; }
-  .btn { display: inline-block; padding: 12px 20px; border-radius: 10px; border: 0.5px solid var(--border); background: transparent; color: var(--text); font-size: 15px; cursor: pointer; text-decoration: none; font-family: inherit; }
-  .btn:hover { border-color: var(--accent); }
-  .btn-primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
-  .btn-primary:hover { filter: brightness(1.08); }
-  .btn:disabled { opacity: 0.5; cursor: default; }
-  .btn:disabled:hover { border-color: var(--border); }
-
-  /* Каталог */
-  section.os { margin-top: 56px; }
-  section.os h2 { font-size: 24px; font-weight: 600; margin: 0 0 16px; letter-spacing: -0.01em; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-  .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 22px; transition: transform 0.2s ease, border-color 0.2s ease; }
-  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
-  .card h3 { margin: 0 0 6px; font-size: 18px; font-weight: 600; }
-  .card p { margin: 0 0 8px; color: var(--text-muted); font-size: 14px; }
-  .card .meta { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
-  .card .btns { margin-top: 4px; }
-  .card img { border-radius: 12px; margin-bottom: 12px; display: block; }
-  .empty { border: 0.5px dashed var(--border); background: transparent; display: flex; align-items: center; justify-content: center; min-height: 140px; color: var(--text-muted); font-size: 14px; }
-
-  /* Появление при прокрутке */
-  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
-  .reveal.in { opacity: 1; transform: none; }
-
-  footer { margin: 64px 0 32px; font-size: 14px; color: var(--text-muted); text-align: center; }
-
-  /* Панель настроек */
-  .panel { display: none; position: absolute; right: 20px; top: 70px; width: 260px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 14px; padding: 16px; z-index: 10; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+  .panel { display: none; position: absolute; right: 0; top: 60px; width: 260px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 14px; padding: 16px; z-index: 30; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
   .panel.open { display: block; }
   .panel h3 { margin: 0 0 8px; font-size: 13px; font-weight: 500; color: var(--text-muted); }
   .row { display: flex; gap: 6px; margin-bottom: 16px; }
@@ -127,24 +81,74 @@
   .swatch[data-c="amber"]   { background: #a8650f; }
   .swatch[data-c="violet"]  { background: #7a4fd1; }
 
+  /* Главный слайдер */
+  .slider { position: relative; height: min(520px, 62vh); min-height: 340px; border-radius: 22px; overflow: hidden; border: 0.5px solid var(--border); background: var(--surface); }
+  .slide { position: absolute; inset: 0; display: grid; grid-template-columns: 1.1fr 1fr; opacity: 0; transition: opacity 0.6s ease; pointer-events: none; }
+  .slide.active { opacity: 1; pointer-events: auto; }
+  .slide-info { padding: clamp(24px, 4vw, 48px); display: flex; flex-direction: column; justify-content: center; }
+  .tag { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+  .slide h1 { font-size: clamp(30px, 4.5vw, 52px); line-height: 1.05; margin: 0 0 14px; font-weight: 600; letter-spacing: -0.02em; }
+  .slide p { font-size: 17px; color: var(--text-muted); margin: 0 0 24px; max-width: 460px; }
+  .slide-media { position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: linear-gradient(135deg, var(--surface-2), var(--bg)); }
+  .slide-media img { width: min(55%, 240px); height: auto; filter: drop-shadow(0 16px 40px rgba(0,0,0,0.35)); }
+  .slide-media::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 70% 30%, var(--accent), transparent 60%); opacity: 0.12; pointer-events: none; }
+
+  .arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 42px; height: 42px; border-radius: 50%; border: 0.5px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; font-size: 18px; }
+  .arrow:hover { border-color: var(--accent); }
+  .arrow.prev { left: 14px; }
+  .arrow.next { right: 14px; }
+  .dots { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); display: flex; gap: 8px; z-index: 3; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; border: none; background: var(--border); cursor: pointer; padding: 0; }
+  .dot.active { background: var(--accent); }
+
+  /* Кнопки */
+  .btns { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 12px 20px; border-radius: 10px; border: 0.5px solid var(--border); background: transparent; color: var(--text); font-size: 15px; cursor: pointer; text-decoration: none; font-family: inherit; }
+  .btn:hover { border-color: var(--accent); }
+  .btn-primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn:disabled { opacity: 0.5; cursor: default; }
+  .btn:disabled:hover { border-color: var(--border); }
+
+  /* Каталог */
+  section.os { margin-top: 56px; scroll-margin-top: 90px; }
+  section.os h2 { font-size: 24px; font-weight: 600; margin: 0 0 16px; letter-spacing: -0.01em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 22px; transition: transform 0.2s ease, border-color 0.2s ease; }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .card h3 { margin: 0 0 6px; font-size: 18px; font-weight: 600; }
+  .card p { margin: 0 0 8px; color: var(--text-muted); font-size: 14px; }
+  .card .meta { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+  .card img { border-radius: 12px; margin-bottom: 12px; display: block; }
+  .empty { border: 0.5px dashed var(--border); background: transparent; display: flex; align-items: center; justify-content: center; min-height: 140px; color: var(--text-muted); font-size: 14px; }
+
+  footer { margin: 64px 0 32px; font-size: 14px; color: var(--text-muted); text-align: center; }
+
   /* Окно подтверждения */
-  .overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); align-items: center; justify-content: center; padding: 16px; z-index: 20; }
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; padding: 16px; z-index: 50; }
   .overlay.open { display: flex; }
   .dialog { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 26px; max-width: 420px; }
   .dialog p { margin: 0 0 10px; font-size: 15px; color: var(--text-muted); }
   .dialog b { color: var(--text); }
   .dialog .btns { justify-content: flex-end; margin-top: 18px; }
 
-  /* Без анимаций, если они отключены в системе */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
     .reveal { opacity: 1; transform: none; }
   }
 
-  @media (max-width: 640px) {
-    nav { display: none; }
-    .hero { padding: 32px 22px 56px; }
-    .dots { left: 22px; }
+  @media (max-width: 720px) {
+    .menu-btn { padding: 8px 12px; font-size: 14px; }
+    .slide { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+    .slide-media { order: -1; }
+    .slide-media img { width: 36%; }
+    .slide-info { padding: 22px 22px 60px; }
+    .slide p { font-size: 15px; }
+    .slider { height: auto; min-height: 560px; }
+    .os-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -152,7 +156,7 @@
 
 <div class="flakes" id="flakes"></div>
 
-<!-- Данные проектов. Когда появится файл Snowfall, вставь прямую ссылку в file -->
+<!-- Данные проектов. Файл появится после релиза: вставь прямую ссылку в file -->
 <script>
   var PROJECTS = {
     snow: {
@@ -168,19 +172,55 @@
       file: 'https://github.com/xLeSniKx/Pathfinder/releases/download/v1.0.0/PathFinder.apk'
     }
   };
+
+  // Слайды главного экрана. Новость или релиз добавляется сюда одним блоком
+  var SLIDES = [
+    {
+      tag: 'Релиз · Windows',
+      title: 'Snowfall',
+      text: 'Падающий снег поверх рабочего стола. Настраивается, смахивается мышью и не мешает работе.',
+      image: '',
+      project: 'snow',
+      link: 'https://github.com/xLeSniKx/snowfall'
+    },
+    {
+      tag: 'Релиз · Android',
+      title: 'Pathfinder',
+      text: 'GPS-трекер в стиле «тумана войны». Открывай карту, гуляя и катаясь по городу.',
+      image: 'pathfinder-icon.svg',
+      project: 'path',
+      link: 'https://github.com/xLeSniKx/Pathfinder'
+    },
+    {
+      tag: 'Новость',
+      title: 'Скоро новая программа',
+      text: 'Готовим следующий проект. Следите за обновлениями на GitHub.',
+      image: '',
+      project: null,
+      link: 'https://github.com/xLeSniKx'
+    }
+  ];
 </script>
 
 <div class="wrap">
 
   <header>
-    <div class="logo">LeSniK <span>Labs</span></div>
-    <nav>
-      <a href="#windows">Windows</a>
-      <a href="#macos">macOS</a>
-      <a href="#linux">Linux</a>
-      <a href="#android">Android</a>
-    </nav>
-    <button class="gear" id="gear" aria-label="Настройки">⚙</button>
+    <a class="logo" href="#top">LeSniK <span>Labs</span></a>
+
+    <div class="right">
+      <div class="menu" id="menu">
+        <button class="menu-btn" id="menuBtn" aria-expanded="false">Каталог</button>
+        <div class="mega" id="mega">
+          <div class="os-grid">
+            <a class="os-tile" href="#windows"><strong>Windows</strong><span>Программы для Windows 10 и 11</span></a>
+            <a class="os-tile" href="#macos"><strong>macOS</strong><span>Программы для Mac</span></a>
+            <a class="os-tile" href="#linux"><strong>Linux</strong><span>Программы для Linux</span></a>
+            <a class="os-tile" href="#android"><strong>Android</strong><span>Приложения для телефона</span></a>
+          </div>
+        </div>
+      </div>
+      <button class="gear" id="gear" aria-label="Настройки">⚙</button>
+    </div>
 
     <div class="panel" id="panel">
       <h3>Тема</h3>
@@ -190,7 +230,7 @@
         <button data-theme="dark">Тёмная</button>
       </div>
       <h3>Цвет акцента</h3>
-      <div class="swatches" id="swatches">
+      <div class="swatches">
         <button class="swatch" data-c="green-1" aria-label="Мятный зелёный"></button>
         <button class="swatch" data-c="green-2" aria-label="Изумрудный"></button>
         <button class="swatch" data-c="green-3" aria-label="Хвойный"></button>
@@ -203,42 +243,14 @@
     </div>
   </header>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>Windows 10 и 11</span><span>macOS</span><span>Linux</span><span>Android</span><span>Открытый исходный код</span><span>Без рекламы</span><span>Без регистрации</span>
-      <span>Windows 10 и 11</span><span>macOS</span><span>Linux</span><span>Android</span><span>Открытый исходный код</span><span>Без рекламы</span><span>Без регистрации</span>
-    </div>
-  </div>
-
-  <!-- Герой с каруселью проектов -->
-  <section class="hero" id="hero">
-
-    <div class="slide active">
-      <p class="eyebrow">Новое · Windows, macOS, Linux</p>
-      <h1>Snowfall</h1>
-      <p>Падающий снег поверх рабочего стола. Настраивается, смахивается мышью и не мешает работе.</p>
-      <div class="btns">
-        <button class="btn btn-primary dl" data-p="snow">Скачать</button>
-        <a class="btn" href="https://github.com/xLeSniKx/snowfall" target="_blank" rel="noopener">Исходный код</a>
-      </div>
-    </div>
-
-    <div class="slide">
-      <p class="eyebrow">Скоро</p>
-      <h1>Следующий проект</h1>
-      <p>Готовим новую программу. Загляните позже или следите за обновлениями на GitHub.</p>
-      <div class="btns">
-        <button class="btn" disabled>Скоро</button>
-      </div>
-    </div>
-
-    <div class="dots" id="dots">
-      <button class="dot active" aria-label="Слайд 1"></button>
-      <button class="dot" aria-label="Слайд 2"></button>
-    </div>
+  <!-- Главный экран: слайдер с релизами и новостями -->
+  <section class="slider" id="slider" id="top">
+    <div id="slides"></div>
+    <button class="arrow prev" id="prev" aria-label="Назад">‹</button>
+    <button class="arrow next" id="next" aria-label="Вперёд">›</button>
+    <div class="dots" id="dots"></div>
   </section>
 
-  <!-- Каталог по ОС -->
   <section class="os reveal" id="windows">
     <h2>Windows</h2>
     <div class="grid">
@@ -301,31 +313,20 @@
 <script>
   const root = document.documentElement;
   const media = matchMedia('(prefers-color-scheme: dark)');
-  const gear = document.getElementById('gear');
-  const panel = document.getElementById('panel');
-  const confirmBox = document.getElementById('confirm');
-
   let prefs = JSON.parse(localStorage.getItem('prefs') || '{}');
   let theme = prefs.theme || 'auto';
   let accent = prefs.accent || 'green-1';
 
-  function savePrefs() {
-    localStorage.setItem('prefs', JSON.stringify({ theme, accent }));
-  }
+  function savePrefs() { localStorage.setItem('prefs', JSON.stringify({ theme, accent })); }
 
   function applyTheme() {
     const dark = theme === 'dark' || (theme === 'auto' && media.matches);
     root.dataset.theme = dark ? 'dark' : 'light';
-    document.querySelectorAll('#themeRow button').forEach(b => {
-      b.classList.toggle('active', b.dataset.theme === theme);
-    });
+    document.querySelectorAll('#themeRow button').forEach(b => b.classList.toggle('active', b.dataset.theme === theme));
   }
-
   function applyAccent() {
     root.dataset.accent = accent;
-    document.querySelectorAll('.swatch').forEach(s => {
-      s.classList.toggle('active', s.dataset.c === accent);
-    });
+    document.querySelectorAll('.swatch').forEach(s => s.classList.toggle('active', s.dataset.c === accent));
   }
 
   document.querySelectorAll('#themeRow button').forEach(b => {
@@ -336,66 +337,153 @@
   });
   media.addEventListener('change', () => { if (theme === 'auto') applyTheme(); });
 
-  gear.addEventListener('click', () => panel.classList.toggle('open'));
+  // Настройки
+  const gear = document.getElementById('gear');
+  const panel = document.getElementById('panel');
+  gear.addEventListener('click', e => { e.stopPropagation(); panel.classList.toggle('open'); });
+
+  // Каталог: открывается при наведении и по клику (для телефонов)
+  const menu = document.getElementById('menu');
+  const menuBtn = document.getElementById('menuBtn');
+  let closeTimer = null;
+  function openMenu() { clearTimeout(closeTimer); menu.classList.add('open'); menuBtn.setAttribute('aria-expanded', 'true'); }
+  function closeMenu() { menu.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false'); }
+  menu.addEventListener('mouseenter', openMenu);
+  menu.addEventListener('mouseleave', () => { closeTimer = setTimeout(closeMenu, 150); });
+  menuBtn.addEventListener('click', e => { e.stopPropagation(); menu.classList.contains('open') ? closeMenu() : openMenu(); });
+  document.querySelectorAll('.os-tile').forEach(t => t.addEventListener('click', closeMenu));
+
   document.addEventListener('click', e => {
     if (!panel.contains(e.target) && e.target !== gear) panel.classList.remove('open');
+    if (!menu.contains(e.target)) closeMenu();
   });
 
-  // Карусель героя
-  const slides = document.querySelectorAll('.slide');
-  const dots = document.querySelectorAll('.dot');
-  let current = 0;
-  let timer = null;
-
-  function showSlide(i) {
-    slides[current].classList.remove('active');
-    dots[current].classList.remove('active');
-    current = i;
-    slides[current].classList.add('active');
-    dots[current].classList.add('active');
-  }
-  function nextSlide() { showSlide((current + 1) % slides.length); }
-  function startCarousel() {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    timer = setInterval(nextSlide, 6000);
-  }
-  function stopCarousel() { clearInterval(timer); }
-
-  dots.forEach((d, i) => d.addEventListener('click', () => { showSlide(i); }));
-  const hero = document.getElementById('hero');
-  hero.addEventListener('mouseenter', stopCarousel);
-  hero.addEventListener('mouseleave', startCarousel);
-  startCarousel();
-
-  // Кнопки «Скачать»: если файла ещё нет, показываем «Скоро», иначе открываем окно подтверждения
+  // Окно подтверждения скачивания
+  const confirmBox = document.getElementById('confirm');
   const cfName = document.getElementById('cf-name');
   const cfVer = document.getElementById('cf-ver');
   const cfSize = document.getElementById('cf-size');
   const yesBtn = document.getElementById('yesBtn');
 
-  document.querySelectorAll('.dl').forEach(btn => {
-    const p = PROJECTS[btn.dataset.p];
-    if (!p || !p.file) {
-      btn.textContent = 'Скоро';
-      btn.disabled = true;
-      return;
-    }
-    btn.addEventListener('click', () => {
-      cfName.textContent = p.name;
-      cfVer.textContent = p.version;
-      cfSize.textContent = p.size;
-      yesBtn.href = p.file;
-      yesBtn.setAttribute('download', p.name);
-      confirmBox.classList.add('open');
-    });
-  });
-
-  // «Да» начинает загрузку файла и закрывает окно, страница остаётся открытой
-  yesBtn.addEventListener('click', () => {
-    setTimeout(() => confirmBox.classList.remove('open'), 100);
-  });
+  function openDownload(key) {
+    const p = PROJECTS[key];
+    if (!p || !p.file) return;
+    cfName.textContent = p.name;
+    cfVer.textContent = p.version;
+    cfSize.textContent = p.size;
+    yesBtn.href = p.file;
+    yesBtn.setAttribute('download', p.name);
+    confirmBox.classList.add('open');
+  }
+  yesBtn.addEventListener('click', () => setTimeout(() => confirmBox.classList.remove('open'), 100));
   document.getElementById('cancelBtn').addEventListener('click', () => confirmBox.classList.remove('open'));
   confirmBox.addEventListener('click', e => { if (e.target === confirmBox) confirmBox.classList.remove('open'); });
+
+  // Кнопки «Скачать» в каталоге
+  document.querySelectorAll('.dl').forEach(btn => {
+    const p = PROJECTS[btn.dataset.p];
+    if (!p || !p.file) { btn.textContent = 'Скоро'; btn.disabled = true; return; }
+    btn.addEventListener('click', () => openDownload(btn.dataset.p));
+  });
+
+  // Слайдер
+  const slidesBox = document.getElementById('slides');
+  const dotsBox = document.getElementById('dots');
+  const sliderEl = document.getElementById('slider');
+  let current = 0;
+  let timer = null;
+
+  SLIDES.forEach((s, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'slide' + (i === 0 ? ' active' : '');
+
+    const info = document.createElement('div');
+    info.className = 'slide-info';
+
+    const tag = document.createElement('p');
+    tag.className = 'tag';
+    tag.textContent = s.tag;
+    info.appendChild(tag);
+
+    const h = document.createElement('h1');
+    h.textContent = s.title;
+    info.appendChild(h);
+
+    const txt = document.createElement('p');
+    txt.textContent = s.text;
+    info.appendChild(txt);
+
+    const btns = document.createElement('div');
+    btns.className = 'btns';
+
+    if (s.project) {
+      const p = PROJECTS[s.project];
+      const b = document.createElement('button');
+      b.className = 'btn btn-primary';
+      if (p && p.file) {
+        b.textContent = 'Скачать';
+        b.addEventListener('click', () => openDownload(s.project));
+      } else {
+        b.textContent = 'Скоро';
+        b.disabled = true;
+      }
+      btns.appendChild(b);
+    }
+
+    const a = document.createElement('a');
+    a.className = 'btn';
+    a.href = s.link;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = s.project ? 'Исходный код' : 'Подробнее';
+    btns.appendChild(a);
+    info.appendChild(btns);
+
+    const media = document.createElement('div');
+    media.className = 'slide-media';
+    if (s.image) {
+      const img = document.createElement('img');
+      img.src = s.image;
+      img.alt = '';
+      media.appendChild(img);
+    }
+
+    slide.appendChild(info);
+    slide.appendChild(media);
+    slidesBox.appendChild(slide);
+
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Слайд ' + (i + 1));
+    dot.addEventListener('click', () => { show(i); restart(); });
+    dotsBox.appendChild(dot);
+  });
+
+  const slideEls = slidesBox.querySelectorAll('.slide');
+  const dotEls = dotsBox.querySelectorAll('.dot');
+
+  function show(i) {
+    slideEls[current].classList.remove('active');
+    dotEls[current].classList.remove('active');
+    current = (i + slideEls.length) % slideEls.length;
+    slideEls[current].classList.add('active');
+    dotEls[current].classList.add('active');
+  }
+  function next() { show(current + 1); }
+  function prev() { show(current - 1); }
+
+  function start() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    timer = setInterval(next, 6000);
+  }
+  function stop() { clearInterval(timer); }
+  function restart() { stop(); start(); }
+
+  document.getElementById('next').addEventListener('click', () => { next(); restart(); });
+  document.getElementById('prev').addEventListener('click', () => { prev(); restart(); });
+  sliderEl.addEventListener('mouseenter', stop);
+  sliderEl.addEventListener('mouseleave', start);
+  start();
 
   // Появление разделов при прокрутке
   const reveals = document.querySelectorAll('.reveal');
@@ -410,11 +498,11 @@
 
   // Снежинки: случайные размер, положение и поворот
   (function () {
-    var box = document.getElementById('flakes');
-    for (var i = 0; i < 45; i++) {
-      var f = document.createElement('div');
+    const box = document.getElementById('flakes');
+    for (let i = 0; i < 45; i++) {
+      const f = document.createElement('div');
       f.className = 'flake';
-      var s = 14 + Math.random() * 22;
+      const s = 14 + Math.random() * 22;
       f.style.width = s + 'px';
       f.style.height = s + 'px';
       f.style.left = (Math.random() * 100) + '%';
