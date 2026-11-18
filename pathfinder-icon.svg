@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c2129"/><stop offset="1" stop-color="#0b0d10"/></linearGradient>
+<linearGradient id="route" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f9e6a"/><stop offset="1" stop-color="#7ef0b4"/></linearGradient>
+<radialGradient id="reveal" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#fff"/><stop offset="0.6" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
+<filter id="blur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="24"/></filter>
+<filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><rect width="512" height="512" fill="#000"/><circle cx="330" cy="200" r="160" fill="url(#reveal)"/><circle cx="170" cy="340" r="120" fill="url(#reveal)"/></mask>
+<clipPath id="rc"><rect width="512" height="512" rx="112"/></clipPath>
+</defs>
+<g clip-path="url(#rc)">
+<rect width="512" height="512" fill="url(#bg)"/>
+<g mask="url(#m)" stroke="#2f3d48" stroke-width="10" stroke-linecap="round" fill="none">
+<path d="M40 150 H470 M40 260 H470 M40 370 H470 M120 40 V470 M250 40 V470 M380 40 V470"/>
+</g>
+<g filter="url(#blur)" fill="#9fb3c6" opacity="0.2">
+<ellipse cx="110" cy="110" rx="170" ry="100"/>
+<ellipse cx="410" cy="400" rx="180" ry="110"/>
+<ellipse cx="256" cy="256" rx="220" ry="130" opacity="0.45"/>
+</g>
+<path d="M90 400 C 150 320, 190 430, 250 330 S 360 250, 410 150" fill="none" stroke="url(#route)" stroke-width="16" stroke-linecap="round" filter="url(#glow)"/>
+<circle cx="90" cy="400" r="14" fill="#7ef0b4"/>
+<circle cx="410" cy="150" r="28" fill="none" stroke="#7ef0b4" stroke-width="6" opacity="0.5"/>
+<circle cx="410" cy="150" r="12" fill="#7ef0b4" filter="url(#glow)"/>
+</g>
+</svg>
