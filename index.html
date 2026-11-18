@@ -19,6 +19,8 @@
 </script>
 
 <style>
+  [hidden] { display: none !important; }
+
   :root { --a-light: #1f9d63; --a-dark: #4fd08f; }
   :root[data-accent="green-2"] { --a-light: #0f8a5f; --a-dark: #34c28a; }
   :root[data-accent="green-3"] { --a-light: #2f7d32; --a-dark: #6cc070; }
@@ -35,7 +37,7 @@
   html { scroll-behavior: smooth; }
   body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
   a { color: inherit; }
-  .wrap { position: relative; z-index: 1; padding: 0 clamp(12px, 1.5vw, 24px); }
+  .wrap { position: relative; z-index: 1; padding: 0 clamp(12px, 1.5vw, 24px); max-width: 1400px; margin: 0 auto; }
 
   /* Снежинки на фоне */
   .flakes { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
@@ -45,27 +47,37 @@
     -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
 
   /* Верхняя панель */
-  header { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; position: relative; z-index: 5; }
-  .logo { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; text-decoration: none; }
-  .logo span { color: var(--accent); }
-  .right { display: flex; align-items: center; gap: 12px; }
+  .topbar { position: sticky; top: 0; z-index: 40; background: var(--bg); border-bottom: 0.5px solid var(--border); }
+  .bar { display: flex; justify-content: space-between; align-items: center; padding: 14px clamp(12px, 1.5vw, 24px); max-width: 1400px; margin: 0 auto; cursor: pointer; }
 
-  .menu { position: relative; }
-  .menu-btn { padding: 10px 18px; border-radius: 10px; border: 0.5px solid var(--border); background: var(--surface); color: var(--text); font-size: 15px; cursor: pointer; font-family: inherit; }
-  .menu-btn:hover, .menu.open .menu-btn { border-color: var(--accent); }
-  .mega { position: absolute; right: 0; top: calc(100% + 10px); width: 460px; max-width: 92vw; background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 14px; box-shadow: 0 12px 32px rgba(0,0,0,0.14); opacity: 0; transform: translateY(-6px); pointer-events: none; transition: opacity 0.2s ease, transform 0.2s ease; }
-  .menu.open .mega { opacity: 1; transform: none; pointer-events: auto; }
-  .os-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .os-tile { display: block; padding: 16px; border-radius: 12px; border: 0.5px solid var(--border); background: var(--surface-2); text-decoration: none; }
-  .os-tile:hover { border-color: var(--accent); }
-  .os-tile strong { display: block; font-size: 16px; font-weight: 600; }
+  .logo { display: flex; flex-direction: column; align-items: flex-start; text-decoration: none; }
+  .word { display: flex; align-items: center; gap: 10px; }
+  .mark { width: 30px; height: 30px; flex-shrink: 0; }
+  .name { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+  .name span { color: var(--accent); }
+
+  .hint { width: 150px; height: auto; margin: 2px 0 0 4px; animation: nudge 2.4s ease-in-out infinite; }
+  .hint.gone { display: none; }
+  @keyframes nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-5px); } }
+
+  .bar-label { font-size: 15px; color: var(--text-muted); }
+  .topbar.open .bar-label { color: var(--accent); }
+
+  .drop { position: absolute; left: 0; right: 0; top: 100%; background: var(--surface); border-bottom: 0.5px solid var(--border); box-shadow: 0 16px 32px rgba(0,0,0,0.12);
+    opacity: 0; transform: translateY(-8px); pointer-events: none; transition: opacity 0.22s ease, transform 0.22s ease; }
+  .topbar.open .drop { opacity: 1; transform: none; pointer-events: auto; }
+  .drop-inner { max-width: 1400px; margin: 0 auto; padding: 22px clamp(12px, 1.5vw, 24px) 24px; }
+  .os-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .os-tile { display: block; padding: 22px; border-radius: 14px; border: 0.5px solid var(--border); background: var(--surface-2); text-decoration: none; transition: border-color 0.2s ease, transform 0.2s ease; }
+  .os-tile:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .os-tile strong { display: block; font-size: 18px; font-weight: 600; }
   .os-tile span { font-size: 13px; color: var(--text-muted); }
 
-  .gear { width: 40px; height: 40px; border-radius: 10px; border: 0.5px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; font-size: 18px; }
+  .drop-foot { display: flex; justify-content: flex-end; margin-top: 16px; position: relative; }
+  .gear { width: 40px; height: 40px; border-radius: 10px; border: 0.5px solid var(--border); background: var(--surface-2); color: var(--text); cursor: pointer; font-size: 18px; }
   .gear:hover { border-color: var(--accent); }
-  .panel { display: none; position: absolute; right: 0; top: 60px; width: 260px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 14px; padding: 16px; z-index: 30; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
-  .panel.open { display: block; }
-  .panel h3 { margin: 0 0 8px; font-size: 13px; font-weight: 500; color: var(--text-muted); }
+  .settings { position: absolute; right: 0; top: 50px; width: 260px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 14px; padding: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.14); z-index: 5; }
+  .settings h3 { margin: 0 0 8px; font-size: 13px; font-weight: 500; color: var(--text-muted); }
   .row { display: flex; gap: 6px; margin-bottom: 16px; }
   .row button { flex: 1; padding: 7px; font-size: 13px; border: 0.5px solid var(--border); border-radius: 8px; background: transparent; color: var(--text); cursor: pointer; font-family: inherit; }
   .row button.active { border-color: var(--accent); color: var(--accent); }
@@ -81,7 +93,8 @@
   .swatch[data-c="amber"]   { background: #a8650f; }
   .swatch[data-c="violet"]  { background: #7a4fd1; }
 
-  /* Главный слайдер */
+  /* Главный экран: слайдер */
+  .home { padding-top: 28px; }
   .slider { position: relative; height: min(520px, 62vh); min-height: 340px; border-radius: 22px; overflow: hidden; border: 0.5px solid var(--border); background: var(--surface); }
   .slide { position: absolute; inset: 0; display: grid; grid-template-columns: 1.1fr 1fr; opacity: 0; transition: opacity 0.6s ease; pointer-events: none; }
   .slide.active { opacity: 1; pointer-events: auto; }
@@ -101,7 +114,17 @@
   .dot { width: 9px; height: 9px; border-radius: 50%; border: none; background: var(--border); cursor: pointer; padding: 0; }
   .dot.active { background: var(--accent); }
 
-  /* Кнопки */
+  /* Новостная лента */
+  .news { margin-top: 48px; }
+  .news h2 { font-size: 24px; font-weight: 600; margin: 0 0 16px; letter-spacing: -0.01em; }
+  .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+  .news-tile { display: flex; flex-direction: column; gap: 6px; padding: 20px; border-radius: 16px; background: var(--surface); border: 0.5px solid var(--border); text-decoration: none; transition: transform 0.2s ease, border-color 0.2s ease; }
+  .news-tile:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .news-tile .tag { margin: 0; }
+  .news-tile strong { font-size: 17px; font-weight: 600; }
+  .news-tile span:last-child { font-size: 14px; color: var(--text-muted); }
+
+  /* Кнопки и карточки */
   .btns { display: flex; gap: 10px; flex-wrap: wrap; }
   .btn { display: inline-block; padding: 12px 20px; border-radius: 10px; border: 0.5px solid var(--border); background: transparent; color: var(--text); font-size: 15px; cursor: pointer; text-decoration: none; font-family: inherit; }
   .btn:hover { border-color: var(--accent); }
@@ -110,9 +133,12 @@
   .btn:disabled { opacity: 0.5; cursor: default; }
   .btn:disabled:hover { border-color: var(--border); }
 
-  /* Каталог */
-  section.os { margin-top: 56px; scroll-margin-top: 90px; }
-  section.os h2 { font-size: 24px; font-weight: 600; margin: 0 0 16px; letter-spacing: -0.01em; }
+  /* Экран каталога */
+  .catalog { padding-top: 32px; }
+  .back { margin: 0 0 12px; }
+  .back a { font-size: 14px; color: var(--text-muted); text-decoration: none; }
+  .back a:hover { color: var(--accent); }
+  .catalog h2 { font-size: 32px; font-weight: 600; margin: 0 0 24px; letter-spacing: -0.02em; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
   .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 22px; transition: transform 0.2s ease, border-color 0.2s ease; }
   .card:hover { transform: translateY(-3px); border-color: var(--accent); }
@@ -125,30 +151,27 @@
   footer { margin: 64px 0 32px; font-size: 14px; color: var(--text-muted); text-align: center; }
 
   /* Окно подтверждения */
-  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; padding: 16px; z-index: 50; }
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 60; }
   .overlay.open { display: flex; }
   .dialog { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 26px; max-width: 420px; }
   .dialog p { margin: 0 0 10px; font-size: 15px; color: var(--text-muted); }
   .dialog b { color: var(--text); }
   .dialog .btns { justify-content: flex-end; margin-top: 18px; }
 
-  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
-  .reveal.in { opacity: 1; transform: none; }
-
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-    .reveal { opacity: 1; transform: none; }
   }
 
-  @media (max-width: 720px) {
-    .menu-btn { padding: 8px 12px; font-size: 14px; }
+  @media (max-width: 760px) {
+    .os-row { grid-template-columns: repeat(2, 1fr); }
     .slide { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
     .slide-media { order: -1; }
     .slide-media img { width: 36%; }
     .slide-info { padding: 22px 22px 60px; }
     .slide p { font-size: 15px; }
     .slider { height: auto; min-height: 560px; }
-    .os-grid { grid-template-columns: 1fr; }
+    .settings { right: -10px; width: 240px; }
+    .hint { width: 120px; }
   }
 </style>
 </head>
@@ -156,146 +179,165 @@
 
 <div class="flakes" id="flakes"></div>
 
-<!-- Данные проектов. Файл появится после релиза: вставь прямую ссылку в file -->
 <script>
-  var PROJECTS = {
-    snow: {
-      name: 'Snowfall-Setup.exe',
+  // ====== ДАННЫЕ ======
+
+  // Программы каталога. os: windows, macos, linux или android.
+  // file — прямая ссылка на файл. Пока пусто, кнопка показывает «Скоро».
+  var CATALOG = [
+    {
+      os: 'windows',
+      name: 'Snowfall',
+      desc: 'Падающий снег поверх рабочего стола. Настраивается, смахивается мышью и не мешает работе.',
       version: '1.0.0',
       size: '12 МБ',
-      file: ''
+      file: '',
+      fileName: 'Snowfall-Setup.exe',
+      source: 'https://github.com/xLeSniKx/snowfall',
+      image: ''
     },
-    path: {
-      name: 'PathFinder.apk',
+    {
+      os: 'android',
+      name: 'Pathfinder',
+      desc: 'GPS-трекер в стиле «тумана войны». Открывай карту, гуляя и катаясь по городу.',
       version: '1.0.0',
       size: '114 МБ',
-      file: 'https://github.com/xLeSniKx/Pathfinder/releases/download/v1.0.0/PathFinder.apk'
+      file: 'https://github.com/xLeSniKx/Pathfinder/releases/download/v1.0.0/PathFinder.apk',
+      fileName: 'PathFinder.apk',
+      source: 'https://github.com/xLeSniKx/Pathfinder',
+      image: 'pathfinder-icon.svg'
     }
-  };
+  ];
 
-  // Слайды главного экрана. Новость или релиз добавляется сюда одним блоком
+  // Слайды главного экрана. item — название программы из CATALOG или пусто.
   var SLIDES = [
     {
       tag: 'Релиз · Windows',
       title: 'Snowfall',
       text: 'Падающий снег поверх рабочего стола. Настраивается, смахивается мышью и не мешает работе.',
       image: '',
-      project: 'snow',
-      link: 'https://github.com/xLeSniKx/snowfall'
+      item: 'Snowfall'
     },
     {
       tag: 'Релиз · Android',
       title: 'Pathfinder',
       text: 'GPS-трекер в стиле «тумана войны». Открывай карту, гуляя и катаясь по городу.',
       image: 'pathfinder-icon.svg',
-      project: 'path',
-      link: 'https://github.com/xLeSniKx/Pathfinder'
+      item: 'Pathfinder'
     },
     {
       tag: 'Новость',
       title: 'Скоро новая программа',
       text: 'Готовим следующий проект. Следите за обновлениями на GitHub.',
       image: '',
-      project: null,
+      item: ''
+    }
+  ];
+
+  // Новостная лента под слайдером. Новость добавляется копированием блока.
+  var NEWS = [
+    {
+      tag: 'Сайт',
+      title: 'LeSniK Labs запущен',
+      text: 'Здесь будут новые программы, обновления и заметки о разработке.',
       link: 'https://github.com/xLeSniKx'
     }
   ];
+
+  var OS_NAMES = { windows: 'Windows', macos: 'macOS', linux: 'Linux', android: 'Android' };
 </script>
 
-<div class="wrap">
+<header class="topbar" id="topbar">
+  <div class="bar" id="bar">
+    <a class="logo" href="#/" id="logo" aria-label="На главную">
+      <span class="word">
+        <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+          <rect width="40" height="40" rx="10" style="fill: var(--accent)"/>
+          <path d="M11 29 C 18 22, 16 16, 22 19 S 27 11, 29 11" fill="none" style="stroke: var(--on-accent)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="29" cy="11" r="3" style="fill: var(--on-accent)"/>
+        </svg>
+        <span class="name">LeSniK <span>Labs</span></span>
+      </span>
+      <svg class="hint" id="hint" viewBox="0 0 170 40" aria-hidden="true">
+        <defs>
+          <linearGradient id="hintGrad" gradientUnits="userSpaceOnUse" x1="4" y1="0" x2="168" y2="0">
+            <stop offset="0" style="stop-color: var(--text)"/>
+            <stop offset="1" style="stop-color: var(--accent)"/>
+          </linearGradient>
+        </defs>
+        <path d="M136 6 C 170 4, 172 30, 146 30 L 30 30" fill="none" stroke="url(#hintGrad)" stroke-width="4" stroke-linecap="round"/>
+        <path d="M4 30 L 30 21 L 26 30 L 30 39 Z" fill="url(#hintGrad)"/>
+      </svg>
+    </a>
+    <span class="bar-label">Каталог</span>
+  </div>
 
-  <header>
-    <a class="logo" href="#top">LeSniK <span>Labs</span></a>
-
-    <div class="right">
-      <div class="menu" id="menu">
-        <button class="menu-btn" id="menuBtn" aria-expanded="false">Каталог</button>
-        <div class="mega" id="mega">
-          <div class="os-grid">
-            <a class="os-tile" href="#windows"><strong>Windows</strong><span>Программы для Windows 10 и 11</span></a>
-            <a class="os-tile" href="#macos"><strong>macOS</strong><span>Программы для Mac</span></a>
-            <a class="os-tile" href="#linux"><strong>Linux</strong><span>Программы для Linux</span></a>
-            <a class="os-tile" href="#android"><strong>Android</strong><span>Приложения для телефона</span></a>
+  <div class="drop" id="drop">
+    <div class="drop-inner">
+      <div class="os-row">
+        <a class="os-tile" href="#/windows"><strong>Windows</strong><span>Программы для Windows 10 и 11</span></a>
+        <a class="os-tile" href="#/macos"><strong>macOS</strong><span>Программы для Mac</span></a>
+        <a class="os-tile" href="#/linux"><strong>Linux</strong><span>Программы для Linux</span></a>
+        <a class="os-tile" href="#/android"><strong>Android</strong><span>Приложения для телефона</span></a>
+      </div>
+      <div class="drop-foot">
+        <button class="gear" id="gear" aria-label="Настройки">⚙</button>
+        <div class="settings" id="settings" hidden>
+          <h3>Тема</h3>
+          <div class="row" id="themeRow">
+            <button data-theme="auto">Авто</button>
+            <button data-theme="light">Светлая</button>
+            <button data-theme="dark">Тёмная</button>
+          </div>
+          <h3>Цвет акцента</h3>
+          <div class="swatches">
+            <button class="swatch" data-c="green-1" aria-label="Мятный зелёный"></button>
+            <button class="swatch" data-c="green-2" aria-label="Изумрудный"></button>
+            <button class="swatch" data-c="green-3" aria-label="Хвойный"></button>
+            <button class="swatch" data-c="green-4" aria-label="Лаймовый"></button>
+            <button class="swatch" data-c="gray" aria-label="Серый"></button>
+            <button class="swatch" data-c="blue" aria-label="Синий"></button>
+            <button class="swatch" data-c="amber" aria-label="Янтарный"></button>
+            <button class="swatch" data-c="violet" aria-label="Фиолетовый"></button>
           </div>
         </div>
       </div>
-      <button class="gear" id="gear" aria-label="Настройки">⚙</button>
     </div>
+  </div>
+</header>
 
-    <div class="panel" id="panel">
-      <h3>Тема</h3>
-      <div class="row" id="themeRow">
-        <button data-theme="auto">Авто</button>
-        <button data-theme="light">Светлая</button>
-        <button data-theme="dark">Тёмная</button>
-      </div>
-      <h3>Цвет акцента</h3>
-      <div class="swatches">
-        <button class="swatch" data-c="green-1" aria-label="Мятный зелёный"></button>
-        <button class="swatch" data-c="green-2" aria-label="Изумрудный"></button>
-        <button class="swatch" data-c="green-3" aria-label="Хвойный"></button>
-        <button class="swatch" data-c="green-4" aria-label="Лаймовый"></button>
-        <button class="swatch" data-c="gray" aria-label="Серый"></button>
-        <button class="swatch" data-c="blue" aria-label="Синий"></button>
-        <button class="swatch" data-c="amber" aria-label="Янтарный"></button>
-        <button class="swatch" data-c="violet" aria-label="Фиолетовый"></button>
-      </div>
-    </div>
-  </header>
+<main class="wrap">
 
-  <!-- Главный экран: слайдер с релизами и новостями -->
-  <section class="slider" id="slider" id="top">
-    <div id="slides"></div>
-    <button class="arrow prev" id="prev" aria-label="Назад">‹</button>
-    <button class="arrow next" id="next" aria-label="Вперёд">›</button>
-    <div class="dots" id="dots"></div>
+  <!-- Главный экран -->
+  <section class="home" id="home">
+    <section class="slider" id="slider">
+      <div id="slides"></div>
+      <button class="arrow prev" id="prev" aria-label="Назад">‹</button>
+      <button class="arrow next" id="next" aria-label="Вперёд">›</button>
+      <div class="dots" id="dots"></div>
+    </section>
+
+    <section class="news">
+      <h2>Новости</h2>
+      <div class="news-grid" id="news"></div>
+    </section>
+
+    <footer>
+      LeSniK Labs. Все программы открыты: исходный код лежит на GitHub. Без рекламы и без регистрации.
+    </footer>
   </section>
 
-  <section class="os reveal" id="windows">
-    <h2>Windows</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Snowfall</h3>
-        <p>Падающий снег поверх рабочего стола.</p>
-        <div class="meta">Версия 1.0.0 · 12 МБ</div>
-        <div class="btns">
-          <button class="btn btn-primary dl" data-p="snow">Скачать</button>
-          <a class="btn" href="https://github.com/xLeSniKx/snowfall" target="_blank" rel="noopener">Исходный код</a>
-        </div>
-      </div>
-    </div>
+  <!-- Экран каталога: появляется после выбора ОС -->
+  <section class="catalog" id="catalog" hidden>
+    <p class="back"><a href="#/">← На главную</a></p>
+    <h2 id="catTitle"></h2>
+    <div class="grid" id="catGrid"></div>
+    <footer>
+      LeSniK Labs. Все программы открыты: исходный код лежит на GitHub. Без рекламы и без регистрации.
+    </footer>
   </section>
 
-  <section class="os reveal" id="macos">
-    <h2>macOS</h2>
-    <div class="grid"><div class="card empty">Пока пусто</div></div>
-  </section>
-
-  <section class="os reveal" id="linux">
-    <h2>Linux</h2>
-    <div class="grid"><div class="card empty">Пока пусто</div></div>
-  </section>
-
-  <section class="os reveal" id="android">
-    <h2>Android</h2>
-    <div class="grid">
-      <div class="card">
-        <img src="pathfinder-icon.svg" width="48" height="48" alt="">
-        <h3>Pathfinder</h3>
-        <p>GPS-трекер в стиле «тумана войны». Открывай карту, гуляя и катаясь по городу.</p>
-        <div class="meta">Версия 1.0.0 · Android</div>
-        <div class="btns">
-          <button class="btn btn-primary dl" data-p="path">Скачать</button>
-          <a class="btn" href="https://github.com/xLeSniKx/Pathfinder" target="_blank" rel="noopener">Исходный код</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    LeSniK Labs. Все программы открыты: исходный код лежит на GitHub. Без рекламы и без регистрации.
-  </footer>
-</div>
+</main>
 
 <!-- Окно подтверждения скачивания -->
 <div class="overlay" id="confirm">
@@ -313,12 +355,13 @@
 <script>
   const root = document.documentElement;
   const media = matchMedia('(prefers-color-scheme: dark)');
+
+  // ====== ТЕМА И АКЦЕНТ ======
   let prefs = JSON.parse(localStorage.getItem('prefs') || '{}');
   let theme = prefs.theme || 'auto';
   let accent = prefs.accent || 'green-1';
 
   function savePrefs() { localStorage.setItem('prefs', JSON.stringify({ theme, accent })); }
-
   function applyTheme() {
     const dark = theme === 'dark' || (theme === 'auto' && media.matches);
     root.dataset.theme = dark ? 'dark' : 'light';
@@ -328,7 +371,6 @@
     root.dataset.accent = accent;
     document.querySelectorAll('.swatch').forEach(s => s.classList.toggle('active', s.dataset.c === accent));
   }
-
   document.querySelectorAll('#themeRow button').forEach(b => {
     b.addEventListener('click', () => { theme = b.dataset.theme; applyTheme(); savePrefs(); });
   });
@@ -337,56 +379,134 @@
   });
   media.addEventListener('change', () => { if (theme === 'auto') applyTheme(); });
 
-  // Настройки
+  // ====== ПАНЕЛЬ КАТАЛОГА ======
+  const topbar = document.getElementById('topbar');
+  const bar = document.getElementById('bar');
+  const logo = document.getElementById('logo');
+  const hint = document.getElementById('hint');
   const gear = document.getElementById('gear');
-  const panel = document.getElementById('panel');
-  gear.addEventListener('click', e => { e.stopPropagation(); panel.classList.toggle('open'); });
-
-  // Каталог: открывается при наведении и по клику (для телефонов)
-  const menu = document.getElementById('menu');
-  const menuBtn = document.getElementById('menuBtn');
+  const settings = document.getElementById('settings');
   let closeTimer = null;
-  function openMenu() { clearTimeout(closeTimer); menu.classList.add('open'); menuBtn.setAttribute('aria-expanded', 'true'); }
-  function closeMenu() { menu.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false'); }
-  menu.addEventListener('mouseenter', openMenu);
-  menu.addEventListener('mouseleave', () => { closeTimer = setTimeout(closeMenu, 150); });
-  menuBtn.addEventListener('click', e => { e.stopPropagation(); menu.classList.contains('open') ? closeMenu() : openMenu(); });
-  document.querySelectorAll('.os-tile').forEach(t => t.addEventListener('click', closeMenu));
 
-  document.addEventListener('click', e => {
-    if (!panel.contains(e.target) && e.target !== gear) panel.classList.remove('open');
-    if (!menu.contains(e.target)) closeMenu();
+  // Подсказка-стрелка показывается, пока пользователь не открыл каталог
+  if (localStorage.getItem('hintSeen')) hint.classList.add('gone');
+  function markSeen() {
+    localStorage.setItem('hintSeen', '1');
+    hint.classList.add('gone');
+  }
+
+  function openDrop() { clearTimeout(closeTimer); topbar.classList.add('open'); markSeen(); }
+  function closeDrop() { topbar.classList.remove('open'); settings.hidden = true; }
+
+  // Открывается при наведении (компьютер) и при клике (телефон)
+  topbar.addEventListener('mouseenter', openDrop);
+  topbar.addEventListener('mouseleave', () => { closeTimer = setTimeout(closeDrop, 200); });
+  bar.addEventListener('click', e => {
+    if (e.target.closest('#logo')) return;
+    e.preventDefault();
+    openDrop();
   });
 
-  // Окно подтверждения скачивания
+  // Логотип ведёт на главную и закрывает каталог
+  logo.addEventListener('click', () => { markSeen(); closeDrop(); });
+
+  gear.addEventListener('click', e => { e.stopPropagation(); settings.hidden = !settings.hidden; });
+  document.addEventListener('click', e => {
+    if (!topbar.contains(e.target)) closeDrop();
+  });
+
+  // ====== ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ ======
+  const homeEl = document.getElementById('home');
+  const catalogEl = document.getElementById('catalog');
+  const catTitle = document.getElementById('catTitle');
+  const catGrid = document.getElementById('catGrid');
+
+  function route() {
+    const m = location.hash.match(/^#\/(windows|macos|linux|android)$/);
+    if (m) {
+      showCatalog(m[1]);
+      homeEl.hidden = true;
+      catalogEl.hidden = false;
+    } else {
+      homeEl.hidden = false;
+      catalogEl.hidden = true;
+    }
+    closeDrop();
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', route);
+
+  // ====== ПОДТВЕРЖДЕНИЕ СКАЧИВАНИЯ ======
   const confirmBox = document.getElementById('confirm');
   const cfName = document.getElementById('cf-name');
   const cfVer = document.getElementById('cf-ver');
   const cfSize = document.getElementById('cf-size');
   const yesBtn = document.getElementById('yesBtn');
 
-  function openDownload(key) {
-    const p = PROJECTS[key];
-    if (!p || !p.file) return;
-    cfName.textContent = p.name;
-    cfVer.textContent = p.version;
-    cfSize.textContent = p.size;
-    yesBtn.href = p.file;
-    yesBtn.setAttribute('download', p.name);
+  function openDownload(item) {
+    if (!item || !item.file) return;
+    cfName.textContent = item.fileName;
+    cfVer.textContent = item.version;
+    cfSize.textContent = item.size;
+    yesBtn.href = item.file;
+    yesBtn.setAttribute('download', item.fileName);
     confirmBox.classList.add('open');
   }
   yesBtn.addEventListener('click', () => setTimeout(() => confirmBox.classList.remove('open'), 100));
   document.getElementById('cancelBtn').addEventListener('click', () => confirmBox.classList.remove('open'));
   confirmBox.addEventListener('click', e => { if (e.target === confirmBox) confirmBox.classList.remove('open'); });
 
-  // Кнопки «Скачать» в каталоге
-  document.querySelectorAll('.dl').forEach(btn => {
-    const p = PROJECTS[btn.dataset.p];
-    if (!p || !p.file) { btn.textContent = 'Скоро'; btn.disabled = true; return; }
-    btn.addEventListener('click', () => openDownload(btn.dataset.p));
-  });
+  function findItem(name) { return CATALOG.find(i => i.name === name); }
 
-  // Слайдер
+  // ====== ЭКРАН КАТАЛОГА ======
+  function el(tag, cls, text) {
+    const n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined) n.textContent = text;
+    return n;
+  }
+
+  function downloadButton(item) {
+    const b = el('button', 'btn btn-primary', item.file ? 'Скачать' : 'Скоро');
+    if (item.file) b.addEventListener('click', () => openDownload(item));
+    else b.disabled = true;
+    return b;
+  }
+
+  function showCatalog(os) {
+    catTitle.textContent = OS_NAMES[os];
+    catGrid.innerHTML = '';
+    const items = CATALOG.filter(i => i.os === os);
+
+    if (items.length === 0) {
+      catGrid.appendChild(el('div', 'card empty', 'Пока пусто'));
+      return;
+    }
+
+    items.forEach(item => {
+      const card = el('div', 'card');
+      if (item.image) {
+        const img = el('img');
+        img.src = item.image;
+        img.width = 48; img.height = 48; img.alt = '';
+        card.appendChild(img);
+      }
+      card.appendChild(el('h3', '', item.name));
+      card.appendChild(el('p', '', item.desc));
+      card.appendChild(el('div', 'meta', 'Версия ' + item.version + ' · ' + item.size));
+
+      const btns = el('div', 'btns');
+      btns.appendChild(downloadButton(item));
+      const src = el('a', 'btn', 'Исходный код');
+      src.href = item.source; src.target = '_blank'; src.rel = 'noopener';
+      btns.appendChild(src);
+      card.appendChild(btns);
+
+      catGrid.appendChild(card);
+    });
+  }
+
+  // ====== ГЛАВНЫЙ ЭКРАН: СЛАЙДЕР ======
   const slidesBox = document.getElementById('slides');
   const dotsBox = document.getElementById('dots');
   const sliderEl = document.getElementById('slider');
@@ -394,66 +514,38 @@
   let timer = null;
 
   SLIDES.forEach((s, i) => {
-    const slide = document.createElement('div');
-    slide.className = 'slide' + (i === 0 ? ' active' : '');
+    const slide = el('div', 'slide' + (i === 0 ? ' active' : ''));
+    const info = el('div', 'slide-info');
+    info.appendChild(el('p', 'tag', s.tag));
+    info.appendChild(el('h1', '', s.title));
+    info.appendChild(el('p', '', s.text));
 
-    const info = document.createElement('div');
-    info.className = 'slide-info';
-
-    const tag = document.createElement('p');
-    tag.className = 'tag';
-    tag.textContent = s.tag;
-    info.appendChild(tag);
-
-    const h = document.createElement('h1');
-    h.textContent = s.title;
-    info.appendChild(h);
-
-    const txt = document.createElement('p');
-    txt.textContent = s.text;
-    info.appendChild(txt);
-
-    const btns = document.createElement('div');
-    btns.className = 'btns';
-
-    if (s.project) {
-      const p = PROJECTS[s.project];
-      const b = document.createElement('button');
-      b.className = 'btn btn-primary';
-      if (p && p.file) {
-        b.textContent = 'Скачать';
-        b.addEventListener('click', () => openDownload(s.project));
-      } else {
-        b.textContent = 'Скоро';
-        b.disabled = true;
-      }
-      btns.appendChild(b);
+    const btns = el('div', 'btns');
+    const item = findItem(s.item);
+    if (item) {
+      btns.appendChild(downloadButton(item));
+      const src = el('a', 'btn', 'Исходный код');
+      src.href = item.source; src.target = '_blank'; src.rel = 'noopener';
+      btns.appendChild(src);
+    } else {
+      const more = el('button', 'btn', 'Подробнее');
+      more.disabled = true;
+      btns.appendChild(more);
     }
-
-    const a = document.createElement('a');
-    a.className = 'btn';
-    a.href = s.link;
-    a.target = '_blank';
-    a.rel = 'noopener';
-    a.textContent = s.project ? 'Исходный код' : 'Подробнее';
-    btns.appendChild(a);
     info.appendChild(btns);
 
-    const media = document.createElement('div');
-    media.className = 'slide-media';
+    const mediaBox = el('div', 'slide-media');
     if (s.image) {
-      const img = document.createElement('img');
-      img.src = s.image;
-      img.alt = '';
-      media.appendChild(img);
+      const img = el('img');
+      img.src = s.image; img.alt = '';
+      mediaBox.appendChild(img);
     }
 
     slide.appendChild(info);
-    slide.appendChild(media);
+    slide.appendChild(mediaBox);
     slidesBox.appendChild(slide);
 
-    const dot = document.createElement('button');
-    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    const dot = el('button', 'dot' + (i === 0 ? ' active' : ''));
     dot.setAttribute('aria-label', 'Слайд ' + (i + 1));
     dot.addEventListener('click', () => { show(i); restart(); });
     dotsBox.appendChild(dot);
@@ -471,7 +563,6 @@
   }
   function next() { show(current + 1); }
   function prev() { show(current - 1); }
-
   function start() {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     timer = setInterval(next, 6000);
@@ -485,23 +576,22 @@
   sliderEl.addEventListener('mouseleave', start);
   start();
 
-  // Появление разделов при прокрутке
-  const reveals = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, { threshold: 0.15 });
-    reveals.forEach(el => io.observe(el));
-  } else {
-    reveals.forEach(el => el.classList.add('in'));
-  }
+  // ====== НОВОСТНАЯ ЛЕНТА ======
+  const newsBox = document.getElementById('news');
+  NEWS.forEach(n => {
+    const tile = el('a', 'news-tile');
+    tile.href = n.link; tile.target = '_blank'; tile.rel = 'noopener';
+    tile.appendChild(el('span', 'tag', n.tag));
+    tile.appendChild(el('strong', '', n.title));
+    tile.appendChild(el('span', '', n.text));
+    newsBox.appendChild(tile);
+  });
 
-  // Снежинки: случайные размер, положение и поворот
+  // ====== СНЕЖИНКИ ======
   (function () {
     const box = document.getElementById('flakes');
     for (let i = 0; i < 45; i++) {
-      const f = document.createElement('div');
-      f.className = 'flake';
+      const f = el('div', 'flake');
       const s = 14 + Math.random() * 22;
       f.style.width = s + 'px';
       f.style.height = s + 'px';
@@ -514,6 +604,7 @@
 
   applyTheme();
   applyAccent();
+  route();
 </script>
 </body>
 </html>
