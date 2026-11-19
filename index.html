@@ -40,6 +40,12 @@
 
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
+    /* Полоса прокрутки: тонкая, скруглённая, в акцентном цвете */
+  html { scrollbar-width: thin; scrollbar-color: var(--accent) transparent; }
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; border: 2px solid var(--bg); opacity: 0.55; }
+  ::-webkit-scrollbar-thumb:hover { opacity: 0.9; }
   body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
   a { color: inherit; }
   .wrap { position: relative; z-index: 1; padding: 0 clamp(12px, 1.5vw, 24px); max-width: 1400px; margin: 0 auto; }
