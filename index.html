@@ -128,7 +128,8 @@
   .news-tile strong { font-size: 17px; font-weight: 600; }
   .news-tile span:last-child { font-size: 14px; color: var(--text-muted); }
   .news-tile.news-cta { border-color: var(--accent); background: linear-gradient(135deg, var(--surface), var(--surface-2)); }
-  .news-tile .news-btn { align-self: flex-start; margin-top: 12px; font-size: 15px; color: var(--on-accent); pointer-events: none; }
+  .news-tile .news-btn { align-self: flex-start; margin-top: 12px; font-size: 15px; color: #ffffff; background: var(--accent); border-color: var(--accent); pointer-events: none; }
+  :root[data-theme="dark"] .news-tile .news-btn { color: #0b0c0e; }
 
   /* Кнопки и карточки */
   .btns { display: flex; gap: 10px; flex-wrap: wrap; }
