@@ -127,6 +127,8 @@
   .news-tile .tag { margin: 0; }
   .news-tile strong { font-size: 17px; font-weight: 600; }
   .news-tile span:last-child { font-size: 14px; color: var(--text-muted); }
+  .news-tile.news-cta { border-color: var(--accent); background: linear-gradient(135deg, var(--surface), var(--surface-2)); }
+  .news-tile .news-btn { align-self: flex-start; margin-top: 12px; font-size: 15px; color: var(--on-accent); pointer-events: none; }
 
   /* Кнопки и карточки */
   .btns { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -239,12 +241,34 @@
   ];
 
   // Новостная лента под слайдером. Новость добавляется копированием блока.
-  var NEWS = [
+    var NEWS = [
+    {
+      tag: 'Канал',
+      title: 'Мы в Telegram',
+      text: 'Новости, релизы и заметки о разработке. Подписывайся, чтобы не пропустить обновления.',
+      link: 'https://t.me/altz86',
+      button: 'Подписаться'
+    },
+    {
+      tag: 'Релиз · Android',
+      title: 'Pathfinder 1.0.0 вышел',
+      text: 'Первая версия GPS-трекера в стиле «тумана войны». APK доступен на странице программы.',
+      link: '#/android',
+      button: 'Открыть'
+    },
+    {
+      tag: 'Релиз · Windows',
+      title: 'Snowfall 1.0.0 вышел',
+      text: 'Падающий снег для Windows 10 и 11. Установщик и исходный код лежат на GitHub.',
+      link: '#/windows',
+      button: 'Открыть'
+    },
     {
       tag: 'Сайт',
       title: 'LeSniK Labs запущен',
       text: 'Здесь будут новые программы, обновления и заметки о разработке.',
-      link: 'https://github.com/xLeSniKx'
+      link: 'https://github.com/xLeSniKx',
+      button: ''
     }
   ];
 
@@ -587,12 +611,14 @@
   // ====== НОВОСТНАЯ ЛЕНТА ======
   const newsBox = document.getElementById('news');
   NEWS.forEach(n => {
-    const tile = el('a', 'news-tile');
-    tile.href = n.link; tile.target = '_blank'; tile.rel = 'noopener';
-    tile.appendChild(el('span', 'tag', n.tag));
-    tile.appendChild(el('strong', '', n.title));
-    tile.appendChild(el('span', '', n.text));
-    newsBox.appendChild(tile);
+  const tile = el('a', 'news-tile' + (n.button ? ' news-cta' : ''));
+  tile.href = n.link;
+  if (n.link.startsWith('http')) { tile.target = '_blank'; tile.rel = 'noopener'; }
+  tile.appendChild(el('span', 'tag', n.tag));
+  tile.appendChild(el('strong', '', n.title));
+  tile.appendChild(el('span', '', n.text));
+  if (n.button) tile.appendChild(el('span', 'btn btn-primary news-btn', n.button));
+  newsBox.appendChild(tile);
   });
 
   // ====== СНЕЖИНКИ ======
