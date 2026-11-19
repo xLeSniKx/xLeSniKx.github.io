@@ -57,7 +57,7 @@
 
   .logo { display: flex; flex-direction: column; align-items: flex-start; text-decoration: none; }
   .word { display: flex; align-items: center; gap: 10px; }
- .mark { width: 40px; height: 40px; flex-shrink: 0; color: var(--accent); }
+  .mark { width: 40px; height: 40px; flex-shrink: 0; color: var(--accent); }
   .name { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
   .name span { color: var(--accent); }
 
@@ -70,7 +70,7 @@
   .topbar.open .bar-label { color: var(--accent); }
 
   .drop { position: absolute; left: 0; right: 0; top: 100%; background: var(--surface); border-bottom: 0.5px solid var(--border); box-shadow: 0 16px 32px rgba(0,0,0,0.12);
-    opacity: 0; transform: translateY(-8px); pointer-events: none; transition: opacity 0.22s ease, transform 0.22s ease; }
+  opacity: 0; transform: translateY(-8px); pointer-events: none; transition: opacity 0.22s ease, transform 0.22s ease; }
   .topbar.open .drop { opacity: 1; transform: none; pointer-events: auto; }
   .drop-inner { max-width: 1400px; margin: 0 auto; padding: 22px clamp(12px, 1.5vw, 24px) 24px; }
   .os-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
@@ -234,12 +234,13 @@
       image: 'pathfinder-icon.svg',
       item: 'Pathfinder'
     },
-    {
-      tag: 'Новость',
-      title: 'Скоро новая программа',
-      text: 'Готовим следующий проект. Следите за обновлениями на GitHub.',
-      image: '',
-      item: ''
+       {
+      tag: 'Анонс · Android',
+      title: 'Hairpin Connect',
+      text: 'Автомобильный навигатор, который говорит языком ралли: вместо обычного голоса раллийная стенограмма с полноценной озвучкой.',
+      image: 'hairpin-icon.svg',
+      item: '',
+      link: 'https://github.com/xLeSniKx'
     }
   ];
 
@@ -563,7 +564,7 @@
       src.href = item.source; src.target = '_blank'; src.rel = 'noopener';
       btns.appendChild(src);
     } else {
-      const more = el('button', 'btn', 'Подробнее');
+      const more = el('button', 'btn', 'Скоро');
       more.disabled = true;
       btns.appendChild(more);
     }
