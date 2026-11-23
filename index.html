@@ -110,6 +110,11 @@
   .slide p { font-size: 17px; color: var(--text-muted); margin: 0 0 24px; max-width: 460px; }
   .slide-media { position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: linear-gradient(135deg, var(--surface-2), var(--bg)); }
   .slide-media img { width: min(55%, 240px); height: auto; filter: drop-shadow(0 16px 40px rgba(0,0,0,0.35)); }
+    /* Текстовые слайды без картинки: текст на всю ширину */
+  .slide-media:empty { display: none; }
+  .slide:has(.slide-media:empty) { grid-template-columns: 1fr; }
+  .slide:has(.slide-media:empty) .slide-info { padding-right: clamp(24px, 6vw, 96px); padding-bottom: 72px; }
+  .slide:has(.slide-media:empty) .slide-info p:not(.tag) { max-width: 900px; }
   .slide-media::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 70% 30%, var(--accent), transparent 60%); opacity: 0.12; pointer-events: none; }
 
   .arrow { position: absolute; bottom: 14px; z-index: 3; width: 38px; height: 38px; border-radius: 12px; border: 0.5px solid var(--border); background: var(--surface-2); color: var(--text); cursor: pointer; font-size: 22px; line-height: 1; display: flex; align-items: center; justify-content: center; transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease; }
@@ -277,7 +282,7 @@
       tag: 'О проекте · Pathfinder',
       title: 'Как появился Pathfinder',
       text: 'Изначально задумывался обычный велотрекер, который бы экономил заряд сильнее стандартных приложений. Идея была простой: записывать маршрут на велосипеде и не разряжать телефон за поездку. Но по мере работы стало понятно, что таких трекеров уже очень много, и каждый из них так или иначе тянет к себе: реклама, платная подписка, награды за ежедневные отметки, которые заставляют возвращаться снова и снова ради очков, а не ради самой поездки. Поэтому решили сделать иначе. Pathfinder задуман как спокойный инструмент: без рекламы, без доната и без механик, которые превращают прогулку в ежедневную задачу. Главная идея проста: карта вокруг скрыта туманом войны, и открывается она только тогда, когда ты сам проходишь или проезжаешь по улицам, дворам и тропам. Это помогает отвлечься от однотипных маршрутов. Даже в родном городе, где кажется, что всё уже изучено, остаются переулки и дороги, по которым никогда не ходил. Pathfinder нужен, чтобы их находить.',
-      image: 'pathfinder-icon.svg',
+      image: '',
       item: 'Pathfinder',
       mobile: [
         {
