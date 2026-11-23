@@ -114,7 +114,7 @@
   .slide-media:empty { display: none; }
   .slide:has(.slide-media:empty) { grid-template-columns: 1fr; }
   .slide:has(.slide-media:empty) .slide-info { padding-right: clamp(24px, 6vw, 96px); padding-bottom: 72px; }
-  .slide:has(.slide-media:empty) .slide-info p:not(.tag) { max-width: 900px; }
+  .slide:has(.slide-media:empty) .slide-info p:not(.tag) { max-width: 1100px; }
   .slide-media::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 70% 30%, var(--accent), transparent 60%); opacity: 0.12; pointer-events: none; }
 
   .arrow { position: absolute; bottom: 14px; z-index: 3; width: 38px; height: 38px; border-radius: 12px; border: 0.5px solid var(--border); background: var(--surface-2); color: var(--text); cursor: pointer; font-size: 22px; line-height: 1; display: flex; align-items: center; justify-content: center; transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease; }
