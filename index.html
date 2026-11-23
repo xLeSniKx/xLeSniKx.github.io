@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8"> 
-<meta name="google-site-verification" content="qMtgf5JI5dro4wSNdiGmeIQcP0Plj0SZH401HJj5lU8" />
-<meta name="yandex-verification" content="672846ff719b97ae" />
+<meta charset="UTF-8">
 <meta name="color-scheme" content="light dark">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="LeSniK Labs: бесплатные программы Snowfall и Pathfinder для Windows, macOS, Linux и Android. Открытый код, без рекламы и регистрации.">
@@ -33,19 +31,16 @@
   :root[data-accent="amber"]   { --a-light: #a8650f; --a-dark: #f2b458; }
   :root[data-accent="violet"]  { --a-light: #7a4fd1; --a-dark: #b49af5; }
 
-  :root { --bg: #f6f6f8; --surface: #ffffff; --surface-2: #eeeef3; --text: #15151c; --text-muted: #5c5c6b; --border: #dcdce4; --on-accent: #ffffff; --accent: var(--a-light); --pattern-opacity: 0.06; }
-  :root[data-theme="dark"] { --bg: #0e0f11; --surface: #16181b; --surface-2: #1e2125; --text: #e8e9ec; --text-muted: #9196a0; --border: #2a2e33; --on-accent: #0b0c0e; --accent: var(--a-dark); --pattern-opacity: 0.09; }
-  :root { color-scheme: light; }
-  :root[data-theme="dark"] { color-scheme: dark; }
+  :root { --bg: #f6f6f8; --surface: #ffffff; --surface-2: #eeeef3; --text: #15151c; --text-muted: #5c5c6b; --border: #dcdce4; --on-accent: #ffffff; --accent: var(--a-light); --pattern-opacity: 0.06; color-scheme: light; }
+  :root[data-theme="dark"] { --bg: #0e0f11; --surface: #16181b; --surface-2: #1e2125; --text: #e8e9ec; --text-muted: #9196a0; --border: #2a2e33; --on-accent: #0b0c0e; --accent: var(--a-dark); --pattern-opacity: 0.09; color-scheme: dark; }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-    /* Полоса прокрутки: тонкая, скруглённая, в акцентном цвете */
-  html { scrollbar-width: thin; scrollbar-color: var(--accent) transparent; }
+  html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--accent) transparent; }
   ::-webkit-scrollbar { width: 10px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; border: 2px solid var(--bg); opacity: 0.55; }
   ::-webkit-scrollbar-thumb:hover { opacity: 0.9; }
+
   body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
   a { color: inherit; }
   .wrap { position: relative; z-index: 1; padding: 0 clamp(12px, 1.5vw, 24px); max-width: 1400px; margin: 0 auto; }
@@ -67,8 +62,7 @@
   .name { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
   .name span { color: var(--accent); }
 
-  .hint { width: 150px; height: auto; margin: 2px 0 0 4px; animation: nudge 2.4s ease-in-out infinite; }
-  .hint { transition: opacity 0.2s ease; }
+  .hint { width: 150px; height: auto; margin: 2px 0 0 4px; animation: nudge 2.4s ease-in-out infinite; transition: opacity 0.2s ease; }
   .topbar.open .hint { opacity: 0; }
   @keyframes nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-5px); } }
 
@@ -76,7 +70,7 @@
   .topbar.open .bar-label { color: var(--accent); }
 
   .drop { position: absolute; left: 0; right: 0; top: 100%; background: var(--surface); border-bottom: 0.5px solid var(--border); box-shadow: 0 16px 32px rgba(0,0,0,0.12);
-  opacity: 0; transform: translateY(-8px); pointer-events: none; transition: opacity 0.22s ease, transform 0.22s ease; }
+    opacity: 0; transform: translateY(-8px); pointer-events: none; transition: opacity 0.22s ease, transform 0.22s ease; }
   .topbar.open .drop { opacity: 1; transform: none; pointer-events: auto; }
   .drop-inner { max-width: 1400px; margin: 0 auto; padding: 22px clamp(12px, 1.5vw, 24px) 24px; }
   .os-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
@@ -117,7 +111,7 @@
   .slide-media { position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: linear-gradient(135deg, var(--surface-2), var(--bg)); }
   .slide-media img { width: min(55%, 240px); height: auto; filter: drop-shadow(0 16px 40px rgba(0,0,0,0.35)); }
   .slide-media::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 70% 30%, var(--accent), transparent 60%); opacity: 0.12; pointer-events: none; }
-  
+
   .arrow { position: absolute; bottom: 14px; z-index: 3; width: 38px; height: 38px; border-radius: 12px; border: 0.5px solid var(--border); background: var(--surface-2); color: var(--text); cursor: pointer; font-size: 22px; line-height: 1; display: flex; align-items: center; justify-content: center; transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease; }
   .arrow:hover { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
   .arrow.prev { left: 18px; }
@@ -148,6 +142,16 @@
   .btn:disabled { opacity: 0.5; cursor: default; }
   .btn:disabled:hover { border-color: var(--border); }
 
+  /* Раздел «Как установить» */
+  .install { margin-top: 56px; scroll-margin-top: 90px; }
+  .install h2 { font-size: 24px; font-weight: 600; margin: 0 0 16px; letter-spacing: -0.01em; }
+  .install-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .install-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 22px; }
+  .install-card h3 { margin: 0 0 10px; font-size: 18px; font-weight: 600; }
+  .install-card ol { margin: 0; padding-left: 20px; color: var(--text-muted); font-size: 14px; }
+  .install-card li { margin-bottom: 6px; }
+  .install-card p { margin: 0; color: var(--text-muted); font-size: 14px; }
+
   /* Экран каталога */
   .catalog { padding-top: 32px; }
   .back { margin: 0 0 12px; }
@@ -163,7 +167,15 @@
   .card img { border-radius: 12px; margin-bottom: 12px; display: block; }
   .empty { border: 0.5px dashed var(--border); background: transparent; display: flex; align-items: center; justify-content: center; min-height: 140px; color: var(--text-muted); font-size: 14px; }
 
-  footer { margin: 64px 0 32px; font-size: 14px; color: var(--text-muted); text-align: center; }
+  /* Общий футер */
+  .site-footer { margin: 64px 0 32px; padding-top: 28px; border-top: 0.5px solid var(--border); position: relative; z-index: 1; }
+  .foot-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px; align-items: start; }
+  .foot-title { margin: 0 0 8px; font-size: 18px; font-weight: 600; }
+  .foot-text { margin: 0 0 12px; font-size: 14px; color: var(--text-muted); max-width: 520px; }
+  .foot-link { font-size: 14px; color: var(--accent); text-decoration: none; }
+  .foot-link:hover { text-decoration: underline; }
+  .share-btn { font-family: inherit; }
+  .foot-updated { margin: 24px 0 0; font-size: 13px; color: var(--text-muted); }
 
   /* Окно подтверждения */
   .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 60; }
@@ -173,20 +185,32 @@
   .dialog b { color: var(--text); }
   .dialog .btns { justify-content: flex-end; margin-top: 18px; }
 
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    .reveal { opacity: 1; transform: none; }
   }
 
   @media (max-width: 760px) {
-    .os-row { grid-template-columns: repeat(2, 1fr); }
-    .slide { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
-    .slide-media { order: -1; }
-    .slide-media img { width: 36%; }
-    .slide-info { padding: 22px 22px 60px; }
-    .slide p { font-size: 15px; }
-    .slider { height: auto; min-height: 560px; }
+    .os-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .os-tile { padding: 16px; }
+    .slider { height: 440px; min-height: 0; border-radius: 18px; }
+    .slide { grid-template-columns: 1fr; }
+    .slide-media { display: none; }
+    .slide-info { justify-content: flex-start; padding: 26px 20px 60px; }
+    .slide h1 { font-size: 30px; margin-bottom: 10px; }
+    .slide p { font-size: 15px; margin-bottom: 18px; }
+    .arrow { top: auto; bottom: 10px; transform: none; width: 34px; height: 34px; font-size: 16px; }
+    .arrow.prev { left: 12px; }
+    .arrow.next { right: 12px; }
+    .dots { bottom: 18px; }
+    .news-grid { grid-template-columns: 1fr; }
+    .bar-label { font-size: 14px; }
+    .hint { width: 110px; }
     .settings { right: -10px; width: 240px; }
-    .hint { width: 120px; }
+    .foot-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -240,7 +264,7 @@
       image: 'pathfinder-icon.svg',
       item: 'Pathfinder'
     },
-       {
+    {
       tag: 'Анонс · Android',
       title: 'Hairpin Connect',
       text: 'Автомобильный навигатор, который говорит языком ралли: вместо обычного голоса раллийная стенограмма с полноценной озвучкой.',
@@ -251,18 +275,11 @@
   ];
 
   // Новостная лента под слайдером. Новость добавляется копированием блока.
-    var NEWS = [
-    {
-      tag: 'Разработка · Android',
-      title: 'Hairpin Connect: половина пути',
-      text: 'Готов интерфейс карты и основной движок маршрутов. Сейчас работаем над голосовой стенограммой и озвучкой.',
-      link: 'https://github.com/xLeSniKx/hairpin-data',
-      button: 'Следить'
-    },
+  var NEWS = [
     {
       tag: 'Канал',
       title: 'Мы в Telegram',
-      text: 'Новости, релизы, заметки о разработке, книги и многое другое. Подписывайся, чтобы не пропустить обновления.',
+      text: 'Новости, релизы и заметки о разработке. Подписывайся, чтобы не пропустить обновления.',
       link: 'https://t.me/altz86',
       button: 'Подписаться'
     },
@@ -281,11 +298,11 @@
       button: 'Открыть'
     },
     {
-      tag: 'Сайт',
-      title: 'LeSniK Labs запущен',
-      text: 'Здесь будут новые программы, обновления и заметки о разработке.',
+      tag: 'Разработка · Android',
+      title: 'Hairpin Connect: половина пути',
+      text: 'Готов интерфейс карты и основной движок маршрутов. Сейчас работаем над голосовой стенограммой и озвучкой.',
       link: 'https://github.com/xLeSniKx',
-      button: ''
+      button: 'Следить'
     }
   ];
 
@@ -296,21 +313,21 @@
   <div class="bar" id="bar">
     <a class="logo" href="#/" id="logo" aria-label="На главную">
       <span class="word">
-       <svg class="mark" viewBox="0 0 200 200" aria-hidden="true">
-  <circle cx="100" cy="100" r="92" fill="none" stroke="currentColor" stroke-width="5"/>
-  <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="2.5" opacity="0.6"/>
-  <g fill="currentColor" opacity="0.9">
-    <polygon points="100,40 110.8,81 105.4,81 118,132 82,132 94.6,81 89.2,81"/>
-    <polygon points="60,62 73.2,95 66.6,95 82,136 38,136 53.4,95 46.8,95"/>
-    <polygon points="140,60 153.2,94 146.6,94 162,136 118,136 133.4,94 126.8,94"/>
-    <polygon points="40,100 47.8,115 44.1,115 53,134 27,134 35.9,115 32.2,115"/>
-    <polygon points="160,96 167.8,113 164.1,113 173,134 147,134 155.9,113 152.2,113"/>
-    <polygon points="82,86 89.2,103 86.4,103 94,124 70,124 77.6,103 75.6,103"/>
-    <polygon points="118,84 125.2,102 122.4,102 130,124 106,124 113.6,102 111.6,102"/>
-  </g>
-  <path d="M50 138 H150" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M104 153 C 92 146, 110 140, 100 134" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-</svg>
+        <svg class="mark" viewBox="0 0 200 200" aria-hidden="true">
+          <circle cx="100" cy="100" r="92" fill="none" stroke="currentColor" stroke-width="5"/>
+          <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="2.5" opacity="0.6"/>
+          <g fill="currentColor" opacity="0.9">
+            <polygon points="100,40 110.8,81 105.4,81 118,132 82,132 94.6,81 89.2,81"/>
+            <polygon points="60,62 73.2,95 66.6,95 82,136 38,136 53.4,95 46.8,95"/>
+            <polygon points="140,60 153.2,94 146.6,94 162,136 118,136 133.4,94 126.8,94"/>
+            <polygon points="40,100 47.8,115 44.1,115 53,134 27,134 35.9,115 32.2,115"/>
+            <polygon points="160,96 167.8,113 164.1,113 173,134 147,134 155.9,113 152.2,113"/>
+            <polygon points="82,86 89.2,103 86.4,103 94,124 70,124 77.6,103 75.6,103"/>
+            <polygon points="118,84 125.2,102 122.4,102 130,124 106,124 113.6,102 111.6,102"/>
+          </g>
+          <path d="M50 138 H150" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M104 153 C 92 146, 110 140, 100 134" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        </svg>
         <span class="name">LeSniK <span>Labs</span></span>
       </span>
       <svg class="hint" id="hint" viewBox="0 0 170 40" aria-hidden="true">
@@ -377,9 +394,31 @@
       <div class="news-grid" id="news"></div>
     </section>
 
-    <footer>
-      LeSniK Labs. Все программы открыты: исходный код лежит на GitHub. Без рекламы и без регистрации.
-    </footer>
+    <section class="install reveal" id="install">
+      <h2>Как установить</h2>
+      <div class="install-grid">
+        <div class="install-card">
+          <h3>Windows 10 и 11</h3>
+          <ol>
+            <li>Скачай установщик со страницы программы.</li>
+            <li>Если появится SmartScreen, нажми «Подробнее» → «Выполнить в любом случае».</li>
+            <li>Следуй указаниям установщика.</li>
+          </ol>
+        </div>
+        <div class="install-card">
+          <h3>macOS</h3>
+          <p>Программы для Mac пока в разработке. Когда они выйдут, здесь появится инструкция: обычно нужно разрешить запуск неподписанного приложения в «Конфиденциальность и безопасность».</p>
+        </div>
+        <div class="install-card">
+          <h3>Android</h3>
+          <ol>
+            <li>Скачай APK со страницы программы.</li>
+            <li>Разреши установку из неизвестных источников для браузера или файлового менеджера.</li>
+            <li>Открой файл APK и установи приложение.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
   </section>
 
   <!-- Экран каталога: появляется после выбора ОС -->
@@ -387,19 +426,31 @@
     <p class="back"><a href="#/">← На главную</a></p>
     <h2 id="catTitle"></h2>
     <div class="grid" id="catGrid"></div>
-    <footer>
-      LeSniK Labs. Все программы открыты: исходный код лежит на GitHub. Без рекламы и без регистрации.
-    </footer>
   </section>
 
 </main>
+
+<!-- Общий футер для всех экранов -->
+<footer class="site-footer wrap">
+  <div class="foot-grid">
+    <div>
+      <p class="foot-title">О нас</p>
+      <p class="foot-text">LeSniK Labs — небольшая студия. Делаем бесплатные программы с открытым кодом для Windows, macOS, Linux и Android. Без рекламы и без регистрации.</p>
+      <a class="foot-link" href="https://t.me/altz86" target="_blank" rel="noopener">Telegram: t.me/altz86</a>
+    </div>
+    <div>
+      <button class="btn share-btn" id="shareBtn">Поделиться сайтом</button>
+    </div>
+  </div>
+  <p class="foot-updated">Последнее обновление: 23 ноября 2026</p>
+</footer>
 
 <!-- Окно подтверждения скачивания -->
 <div class="overlay" id="confirm">
   <div class="dialog">
     <p>Вы собираетесь скачать файл <b id="cf-name"></b> (версия <span id="cf-ver"></span>, <span id="cf-size"></span>).</p>
     <p>Если не уверены, сначала проверьте открытый исходный код: ссылка «Исходный код» находится рядом с кнопкой «Скачать».</p>
-    <p>Устройство может показать экран об опасном приложении так как программа не подписана.</p>
+    <p>Windows может показать предупреждение SmartScreen, потому что программа не подписана.</p>
     <div class="btns">
       <button class="btn" id="cancelBtn">Отмена</button>
       <a class="btn btn-primary" id="yesBtn" href="#">Да, скачать</a>
@@ -438,12 +489,10 @@
   const topbar = document.getElementById('topbar');
   const bar = document.getElementById('bar');
   const logo = document.getElementById('logo');
-  const hint = document.getElementById('hint');
   const gear = document.getElementById('gear');
   const settings = document.getElementById('settings');
   let closeTimer = null;
 
-  // Подсказка-стрелка показывается, пока пользователь не открыл каталог
   function openDrop() { clearTimeout(closeTimer); topbar.classList.add('open'); }
   function closeDrop() { topbar.classList.remove('open'); settings.hidden = true; }
 
@@ -456,9 +505,7 @@
     openDrop();
   });
 
-  // Логотип ведёт на главную и закрывает каталог
   logo.addEventListener('click', () => closeDrop());
-
   gear.addEventListener('click', e => { e.stopPropagation(); settings.hidden = !settings.hidden; });
   document.addEventListener('click', e => {
     if (!topbar.contains(e.target)) closeDrop();
@@ -628,14 +675,32 @@
   // ====== НОВОСТНАЯ ЛЕНТА ======
   const newsBox = document.getElementById('news');
   NEWS.forEach(n => {
-  const tile = el('a', 'news-tile' + (n.button ? ' news-cta' : ''));
-  tile.href = n.link;
-  if (n.link.startsWith('http')) { tile.target = '_blank'; tile.rel = 'noopener'; }
-  tile.appendChild(el('span', 'tag', n.tag));
-  tile.appendChild(el('strong', '', n.title));
-  tile.appendChild(el('span', '', n.text));
-  if (n.button) tile.appendChild(el('span', 'btn btn-primary news-btn', n.button));
-  newsBox.appendChild(tile);
+    const tile = el('a', 'news-tile' + (n.button ? ' news-cta' : ''));
+    tile.href = n.link;
+    if (n.link.startsWith('http')) { tile.target = '_blank'; tile.rel = 'noopener'; }
+    tile.appendChild(el('span', 'tag', n.tag));
+    tile.appendChild(el('strong', '', n.title));
+    tile.appendChild(el('span', '', n.text));
+    if (n.button) tile.appendChild(el('span', 'btn btn-primary news-btn', n.button));
+    newsBox.appendChild(tile);
+  });
+
+  // ====. КНОПКА «ПОДЕЛИТЬСЯ» ======
+  const shareBtn = document.getElementById('shareBtn');
+  shareBtn.addEventListener('click', async () => {
+    const url = location.origin + location.pathname;
+    const data = { title: 'LeSniK Labs', text: 'Бесплатные программы с открытым кодом', url };
+    if (navigator.share) {
+      try { await navigator.share(data); } catch (e) { /* отменено пользователем */ }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      shareBtn.textContent = 'Ссылка скопирована';
+    } catch (e) {
+      shareBtn.textContent = url;
+    }
+    setTimeout(() => { shareBtn.textContent = 'Поделиться сайтом'; }, 2000);
   });
 
   // ====== СНЕЖИНКИ ======
@@ -652,6 +717,17 @@
       box.appendChild(f);
     }
   })();
+
+  // Появление раздела «Как установить» при прокрутке
+  const reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.15 });
+    reveals.forEach(node => io.observe(node));
+  } else {
+    reveals.forEach(node => node.classList.add('in'));
+  }
 
   applyTheme();
   applyAccent();
